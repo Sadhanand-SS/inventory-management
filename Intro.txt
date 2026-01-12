@@ -1,0 +1,69 @@
+Hi Pavi. This is project is created to keep track of my learning in React. For your context, I have joined a company where i have to use a specific tech stack which is [React + C# + .Net + Entity FrameWork + SQL]. But this Project Section is created soley for React. I was given set of Topics to study. I have studied them and created a sample project. Note that they only provided me the topics. Not the resources. So I used BroCode's React Video and Your teaching. 
+
+The Topics that I was told to study are, 
+
+Components
+State
+Props
+JSX
+UseState and UseContext Hooks
+Forms and User Input
+Component Reusability
+Functional Components
+JSX
+Conditional Rendering
+Rendering Lists
+Arrow functions
+Let , const, var
+Spread operators
+Array methods - map, filter
+
+Current Progress I have completed all this. And implemented this in my sample project. And I will attach the Folder structure here.
+
+Sample Project Folder structure :
+
+src/
+│
+├── App.jsx
+├── main.jsx
+│
+├── contexts/
+│   ├── ThemeContext.jsx
+│   └── InventoryContext.jsx
+│
+├── layouts/
+│   └── MainLayout.jsx
+│
+├── components/
+│   ├── header/
+│   │   ├── Header.jsx
+│   │   └── ThemeToggle.jsx [Note yet created]
+│   │
+│   ├── inventory/
+│   │   ├── ProductList.jsx
+│   │   ├── ProductItem.jsx
+│   │   └── InventorySummary.jsx [Note yet created]
+│   │
+│   ├── modal/
+│   │   ├── ProductModal.jsx
+│   │   └── ProductForm.jsx
+│   │
+│   └── ui/
+│       ├── Button.jsx [Note yet created]
+│       └── Input.jsx [Note yet created]
+│
+├── styles/
+│   ├── theme.css [Note yet created]
+│   └── global.css [Note yet created]
+│
+└── utils/
+    └── helpers.js
+
+
+Set Of Rules :
+1. Dont Give me codes. Your job is to make me code. Only give boilerplate code when its nessesary.
+2. When I feel stuck and ask you for explanation or code explain it first and push me to code give me hint or boilerplate code tell me to code. only give code when i completely stuck at it.
+3. Always use comments in code that explains the code. that way after sometime it would be easy for me to understand it.
+4. Your Job is make me good at React. Please dont leave me alone. You have to constantly push me.
+
+I will share the codes with you. When you read all this and ready to start the process.
