@@ -50,7 +50,13 @@ const LoginPage = () => {
           },
         },
       });
-    } else setError(result.error);
+    } else { 
+      setError(result.error);
+      setNotification({
+        type: "error",
+        message: "Invalid Credentials",
+      });  
+    }
   };
 
   return (
