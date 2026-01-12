@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import InventoryPage from "./pages/InventoryPage";
 import LoginPage from "./pages/LoginPage";
+import RequireAuth from "./components/auth/RequireAuth";
 
 /**
  * App.jsx
@@ -27,8 +28,15 @@ const App = () => {
     <BrowserRouter>
       <MainLayout>
         <Routes>
-          <Route path="/inventory" element={<InventoryPage />} />
-          <Route path="/login" element={<LoginPage/>} />
+          <Route
+            path="/inventory"
+            element={
+              <RequireAuth>
+                <InventoryPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
           {/* Default / fallback route */}
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<Navigate to="Hello" />} />
