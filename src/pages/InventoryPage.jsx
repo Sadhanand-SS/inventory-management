@@ -73,7 +73,7 @@ const InventoryPage = () => {
       // CLEAR route state after consuming it
       navigate(location.pathname, { replace: true, state: null });
     }
-  }, [location, navigate]);
+  }, [location.state, navigate]);
 
   /**
    * Opens the modal in ADD mode.

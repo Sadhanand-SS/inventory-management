@@ -26,7 +26,7 @@ const LoginPage = () => {
       // CLEAR route state after consuming it
       navigate(location.pathname, { replace: true, state: null });
     }
-  }, [location, navigate]);
+  }, [location.state, navigate]);
 
   // Event Handlers
   const handleChange = (e) => {
