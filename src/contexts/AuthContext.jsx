@@ -107,7 +107,7 @@ const AuthProvider = ({ children }) => {
     }
     const { password: _, ...cleanUser } = matchedUser;
     setUser(cleanUser);
-    return { success: true };
+    return { success: true, user: cleanUser };
   };
 
   /**

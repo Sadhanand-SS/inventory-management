@@ -39,7 +39,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           {/* Default / fallback route */}
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="*" element={<Navigate to="Hello" />} />
+          {/* <Route path="*" element={<Navigate to="Hello" />} /> */}
         </Routes>
       </MainLayout>
     </BrowserRouter>
