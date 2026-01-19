@@ -4,7 +4,7 @@ import ProductList from "../components/inventory/ProductList";
 import ProductModal from "../components/inventory/modals/ProductModal";
 import InventorySummary from "../components/inventory/InventorySummary";
 import Notification from "../components/ui/Notification";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 /**
  * InventoryPage
@@ -24,7 +24,7 @@ import { useLocation, useNavigate } from "react-router-dom";
  * Single source of truth for UI flow:
  * `editorState`
  */
-const InventoryPage = () => {
+const InventoryPage = ({vendorId : propVendorId}) => {
   /**
    * editorState
    * -----------
@@ -43,6 +43,11 @@ const InventoryPage = () => {
    *
    * It is NOT the submitted data.
    */
+
+  const {vendorId : routeVendorId} = useParams();
+
+  const activeVendorId = propVendorId || routeVendorId; 
+
   const [editorState, setEditorState] = useState({
     open: false,
     initialProduct: null,
@@ -63,6 +68,8 @@ const InventoryPage = () => {
   const { products, addProduct, updateProduct, deleteProduct } =
     useContext(InventoryContext);
 
+  const vendorProducts = products.filter(p => p.vendorId === activeVendorId);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -73,7 +80,7 @@ const InventoryPage = () => {
       // CLEAR route state after consuming it
       navigate(location.pathname, { replace: true, state: null });
     }
-  }, [location.state, navigate]);
+  }, [location.pathname, navigate]);
 
   /**
    * Opens the modal in ADD mode.
@@ -121,7 +128,7 @@ const InventoryPage = () => {
   const handleSubmitProduct = async (productDraft) => {
     const result = editorState.initialProduct?.id
       ? await updateProduct(productDraft)
-      : await addProduct(productDraft);
+      : await addProduct({ ...productDraft, vendorId: activeVendorId });
 
     if (result.success) {
       setNotification({
@@ -176,13 +183,13 @@ const InventoryPage = () => {
         />
       )}
 
-      <InventorySummary products={products} />
+      <InventorySummary products={vendorProducts} />
       {/* Page-level ADD action */}
       <button onClick={handleAddClick}>Add Product</button>
 
       {/* Inventory list delegates edit/delete actions upward */}
       <ProductList
-        products={products}
+        products={vendorProducts}
         onEdit={handleEditClick}
         onDelete={handleDeleteProduct}
       />

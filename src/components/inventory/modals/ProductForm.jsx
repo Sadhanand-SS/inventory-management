@@ -15,10 +15,13 @@ const ProductForm = ({ product, onSubmit }) => {
    * Prefill inputs when editing.
    * Empty string fallback for ADD mode.
    */
-  const [name, setName] = useState(product.name || "");
-  const [price, setPrice] = useState(product.price || "");
-  const [quantity, setQuantity] = useState(product.quantity || "");
-  const [category, setCategory] = useState(product.category || "");
+
+  const safeProduct = product || {};
+
+  const [name, setName] = useState(safeProduct.name || "");
+  const [price, setPrice] = useState(safeProduct.price || "");
+  const [quantity, setQuantity] = useState(safeProduct.quantity || "");
+  const [category, setCategory] = useState(safeProduct.category || "");
 
   /**
    * Submit handler.

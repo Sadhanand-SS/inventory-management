@@ -31,7 +31,7 @@ const App = () => {
       <MainLayout>
         <Routes>
           <Route
-            path="/inventory"
+            path="/inventory/:vendorId"
             element={
               <RequireAuth>
                 <InventoryPage />

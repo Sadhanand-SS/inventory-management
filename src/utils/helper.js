@@ -1,6 +1,7 @@
-export const REQUIRED_FIELDS_ADD = ["name", "price", "quantity", "category"];
+export const REQUIRED_FIELDS_ADD = ["vendorId", "name", "price", "quantity", "category"];
 export const REQUIRED_FIELDS_UPDATE = [
   "id",
+  "vendorId",
   "name",
   "price",
   "quantity",

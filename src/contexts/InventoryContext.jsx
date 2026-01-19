@@ -44,6 +44,7 @@ const InventoryProvider = ({ children }) => {
   const [products, setProducts] = useState([
     {
       id: 1,
+      vendorId: "V-103",
       name: "Wireless Mouse",
       price: 799,
       quantity: 25,
@@ -51,6 +52,7 @@ const InventoryProvider = ({ children }) => {
     },
     {
       id: 2,
+      vendorId: "V-103",
       name: "Mechanical Keyboard",
       price: 2499,
       quantity: 15,
@@ -58,6 +60,7 @@ const InventoryProvider = ({ children }) => {
     },
     {
       id: 3,
+      vendorId: "V-101",
       name: "Notebook",
       price: 120,
       quantity: 100,
@@ -65,6 +68,7 @@ const InventoryProvider = ({ children }) => {
     },
     {
       id: 4,
+      vendorId: "V-101",
       name: "Water Bottle",
       price: 349,
       quantity: 40,
@@ -72,6 +76,7 @@ const InventoryProvider = ({ children }) => {
     },
     {
       id: 5,
+      vendorId: "V-102",
       name: "Backpack",
       price: 1999,
       quantity: 10,

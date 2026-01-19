@@ -3,6 +3,7 @@ import VendorSummary from "../components/vendor/VendorSummary";
 import { useContext, useState } from "react";
 import { VendorContext } from "../contexts/VendorContext";
 import Notification from "../components/ui/Notification";
+import InventoryPage from "./InventoryPage";
 
 const VendorDetailPage = () => {
   const { vendorId } = useParams();
@@ -40,6 +41,7 @@ const VendorDetailPage = () => {
         />
       )}
       <VendorSummary vendor={currentVendor} onEdit={handleVendorUpdate} />
+      <InventoryPage vendorId={vendorId} />
     </div>
   );
 };
