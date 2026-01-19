@@ -6,14 +6,11 @@ import VendorList from "../components/vendor/VendorList";
 import VendorModal from "../components/vendor/modals/VendorModal";
 
 const VendorsPage = () => {
-  const [editorState, setEditorState] = useState({
-    open: false,
-    initialVendor: null,
-  });
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const [notification, setNotification] = useState(null);
 
-  const { vendors, addVendor, updateVendor, deleteVendor } =
+  const { vendors, addVendor, deleteVendor } =
     useContext(VendorContext);
 
   const location = useLocation();
@@ -27,17 +24,7 @@ const VendorsPage = () => {
   }, [location.state, navigate]);
 
   const handleAddClick = () => {
-    setEditorState({
-      open: true,
-      initialVendor: {},
-    });
-  };
-
-  const handleEditClick = (vendor) => {
-    setEditorState({
-      open: true,
-      initialVendor: vendor,
-    });
+    setIsAddOpen(true);
   };
 
   const handleDeleteVendor = async (vendorId) => {
@@ -63,23 +50,17 @@ const VendorsPage = () => {
   };
 
   const closeModal = () => {
-    setEditorState({
-      open: false,
-      initialVendor: null,
-    });
+    setIsAddOpen(false);
   };
 
   const handleSubmitVendor = async (vendorDraft) => {
-    const result = editorState.initialVendor?.vendorId
-      ? await updateVendor(vendorDraft)
-      : await addVendor(vendorDraft);
+    const result = await addVendor(vendorDraft);
 
     if (result.success) {
       setNotification({
         type: "success",
-        message: "Vendor Details Saved Successfully",
+        message: "Vendor added successfully",
       });
-
       closeModal();
     } else {
       setNotification({
@@ -99,15 +80,12 @@ const VendorsPage = () => {
         />
       )}
 
-      <button onClick={handleAddClick}>Add</button>
-      <VendorList
-        vendors={vendors}
-        onEdit={handleEditClick}
-        onDelete={handleDeleteVendor}
-      />
-      {editorState.open && (
+      <button onClick={handleAddClick}>Add Vendor</button>
+      <VendorList vendors={vendors} onDelete={handleDeleteVendor} />
+
+      {isAddOpen && (
         <VendorModal
-          vendor={editorState.initialVendor}
+          vendor={{}}
           onClose={closeModal}
           onSubmit={handleSubmitVendor}
         />

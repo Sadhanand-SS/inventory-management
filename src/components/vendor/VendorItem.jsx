@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const VendorItem = ({ vendor, onEdit, onDelete }) => {
+const VendorItem = ({ vendor, onDelete }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -13,7 +13,6 @@ const VendorItem = ({ vendor, onEdit, onDelete }) => {
         {vendor.name}
       </span>
       <span>{vendor.status}</span>
-      {/* <button onClick={() => onEdit(vendor)}>Edit</button> */}
       <button onClick={() => onDelete(vendor.vendorId)}>Delete</button>
     </li>
   );

@@ -1,10 +1,12 @@
 import { useState } from "react";
 
 const VendorForm = ({ vendor, onSubmit }) => {
-  const [name, setName] = useState(vendor.name || "");
-  const [email, setEmail] = useState(vendor.email || "");
+  const safeVendor = vendor || {};
+
+  const [name, setName] = useState(safeVendor.name || "");
+  const [email, setEmail] = useState(safeVendor.email || "");
   const [status, setStatus] = useState(
-    vendor.vendorId ? vendor.status : "active"
+    safeVendor.vendorId ? safeVendor.status : "active"
   );
 
   const handleSubmit = (e) => {

@@ -1,6 +1,6 @@
 import VendorItem from "./VendorItem";
 
-const VendorList = ({ vendors, onEdit, onDelete }) => {
+const VendorList = ({ vendors, onDelete }) => {
   if (vendors.length === 0) return <p>No Vendors available.</p>;
 
   return (
@@ -9,7 +9,6 @@ const VendorList = ({ vendors, onEdit, onDelete }) => {
         <VendorItem
           key={vendor.vendorId}
           vendor={vendor}
-          onEdit={onEdit}
           onDelete={onDelete}
         />
       ))}

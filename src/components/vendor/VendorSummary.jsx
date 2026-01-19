@@ -1,17 +1,30 @@
-import { useContext } from "react";
-import { VendorContext } from "../../contexts/VendorContext";
+import { useState } from "react";
+import VendorModal from "./modals/VendorModal";
 
-const VendorSummary = ({ vendorId }) => {
-  const { vendors, updateVendor } = useContext(VendorContext);
-  const currentVendor = vendors.find(
-    (vendor) => vendor.vendorId === vendorId
-  );
+const VendorSummary = ({ vendor, onEdit }) => {
+  const [isEditOpen, setEditOpen] = useState(false);
 
-  if (!currentVendor) {
+  const handleEditClick = () => {
+    setEditOpen(true);
+  };
+
+  const closeModal = () => {
+    setEditOpen(false);
+  };
+
+  const handleSubmitVendor = (vendorDraft) => {
+    const result = onEdit(vendorDraft);
+
+    if (result.success) {
+      closeModal();
+    }
+  };
+
+  if (!vendor) {
     return <p>Loading vendor details...</p>;
   }
 
-  const { vendorId: id, name, email, status } = currentVendor;
+  const { vendorId: id, name, email, status } = vendor;
 
   return (
     <div>
@@ -19,6 +32,16 @@ const VendorSummary = ({ vendorId }) => {
       <p>Name: {name}</p>
       <p>Email: {email}</p>
       <p>Status: {status}</p>
+
+      <button onClick={handleEditClick}>Edit</button>
+
+      {isEditOpen && (
+        <VendorModal
+          vendor={vendor}
+          onClose={closeModal}
+          onSubmit={handleSubmitVendor}
+        />
+      )}
     </div>
   );
 };
