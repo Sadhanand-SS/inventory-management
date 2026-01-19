@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import ThemeProvider from "./contexts/ThemeContext";
 import InventoryProvider from "./contexts/InventoryContext";
 import AuthProvider from "./contexts/AuthContext.jsx";
+import VendorProvider from "./contexts/VendorContext.jsx";
 
 /**
  * main.jsx
@@ -32,9 +33,11 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <InventoryProvider>
-          <App />
-        </InventoryProvider>
+        <VendorProvider>
+          <InventoryProvider>
+            <App />
+          </InventoryProvider>
+        </VendorProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>

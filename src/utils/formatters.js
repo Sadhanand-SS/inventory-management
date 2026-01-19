@@ -9,8 +9,7 @@ export const formatPrice = (price) => {
   return currencyFormatter.format(price);
 };
 
-export const formatQuantity =(quantity) => {
-    if(typeof quantity !== "number" || isNaN(quantity)) return "-";
-    return `${quantity} pcs`;
-
-}
+export const formatQuantity = (quantity) => {
+  if (typeof quantity !== "number" || isNaN(quantity)) return "-";
+  return `${quantity} pcs`;
+};

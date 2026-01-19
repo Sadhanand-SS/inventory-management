@@ -4,6 +4,8 @@ import MainLayout from "./layouts/MainLayout";
 import InventoryPage from "./pages/InventoryPage";
 import LoginPage from "./pages/LoginPage";
 import RequireAuth from "./components/auth/RequireAuth";
+import VendorsPage from "./pages/VendorsPage";
+import VendorDetailPage from "./pages/VendorDetailPage";
 
 /**
  * App.jsx
@@ -39,6 +41,24 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           {/* Default / fallback route */}
           <Route path="/" element={<Navigate to="/login" />} />
+          <Route
+            path="/vendors"
+            element={
+              <RequireAuth>
+                <VendorsPage />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/vendors/:vendorId"
+            element={
+              <RequireAuth>
+                <VendorDetailPage />
+              </RequireAuth>
+            }
+          />
+
           {/* <Route path="*" element={<Navigate to="Hello" />} /> */}
         </Routes>
       </MainLayout>

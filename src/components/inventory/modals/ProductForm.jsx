@@ -11,7 +11,6 @@ import { useState } from "react";
  * - Notify parent on submit
  */
 const ProductForm = ({ product, onSubmit }) => {
-
   /**
    * Prefill inputs when editing.
    * Empty string fallback for ADD mode.
@@ -41,7 +40,6 @@ const ProductForm = ({ product, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-
       <input
         placeholder="Name"
         value={name}
@@ -72,10 +70,7 @@ const ProductForm = ({ product, onSubmit }) => {
         required
       />
 
-      <button type="submit">
-        Save
-      </button>
-
+      <button type="submit">Save</button>
     </form>
   );
 };

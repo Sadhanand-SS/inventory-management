@@ -18,7 +18,6 @@ import Header from "../components/header/Header";
  * - It does NOT contain business rules
  */
 const MainLayout = ({ children }) => {
-
   /**
    * Consume theme-related data from ThemeContext.
    *
@@ -49,10 +48,7 @@ const MainLayout = ({ children }) => {
         - children represents whatever is passed inside MainLayout
         - Keeps layout reusable and flexible
       */}
-      <main>
-        {children}
-      </main>
-
+      <main>{children}</main>
     </div>
   );
 };

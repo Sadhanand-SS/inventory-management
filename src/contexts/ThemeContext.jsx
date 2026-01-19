@@ -23,7 +23,6 @@ export const ThemeContext = createContext(null);
  * controlled actions to update it.
  */
 const ThemeProvider = ({ children }) => {
-
   /**
    * Single source of truth for theme.
    * Possible values: "light" | "dark"
@@ -41,9 +40,7 @@ const ThemeProvider = ({ children }) => {
    * It only updates state.
    */
   const toggleTheme = () => {
-    setTheme(prevTheme =>
-      prevTheme === "light" ? "dark" : "light"
-    );
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   /**
@@ -66,9 +63,7 @@ const ThemeProvider = ({ children }) => {
    * to the entire application.
    */
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 

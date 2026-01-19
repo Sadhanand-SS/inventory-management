@@ -2,26 +2,73 @@ import { createContext, useState } from "react";
 
 export const VendorContext = createContext(null);
 
-const VendorProvider = ({children}) => {
-    const [vendors, setVendors] = useState([]);
+const VendorProvider = ({ children }) => {
+  const [vendors, setVendors] = useState([
+    {
+      vendorId: "V-101",
+      name: "Vendor One",
+      email: "vendor1@example.com",
+      status: "active",
+    },
+    {
+      vendorId: "V-102",
+      name: "Vendor Two",
+      email: "vendor2@example.com",
+      status: "active",
+    },
+    {
+      vendorId: "V-103",
+      name: "Vendor Three",
+      email: "vendor3@example.com",
+      status: "inactive",
+    },
+  ]);
 
-    const addVendor = (credentials) =>{
+  const addVendor = (vendorDraft) => {
+    setVendors((prevVendors) => [
+      ...prevVendors,
+      { ...vendorDraft, vendorId: `V-${Date.now()}` },
+    ]);
+    return { success: true };
+  };
 
-    };
+  const updateVendor = (vendor) => {
+    setVendors((prevVendors) =>
+      prevVendors.map((p) =>
+        p.vendorId === vendor.vendorId ? { ...p, ...vendor } : p
+      )
+    );
+    return { success: true };
+  };
 
-    const updateVendor = (credentials) => {
+  const deleteVendor = (vendorId) => {
+    return new Promise((resolve) => {
+      setVendors((prevVendors) => {
+        const exists = prevVendors.some(
+          (vendor) => vendor.vendorId === vendorId
+        );
 
-    };
+        if (!exists) {
+          resolve({ success: false, error: "VENDOR_NOT_FOUND" });
+          return prevVendors;
+        }
 
-    const deleteVendor = (credentials) => {
+        resolve({ success: true });
+        return prevVendors.filter((vendor) => vendor.vendorId !== vendorId);
+      });
+    });
+  };
 
-    };
+  const value = {
+    vendors,
+    addVendor,
+    updateVendor,
+    deleteVendor,
+  };
 
+  return (
+    <VendorContext.Provider value={value}> {children}</VendorContext.Provider>
+  );
+};
 
-    const value = {};
-    return (
-        <VendorContext.Provider value={value}>
-          {children}
-        </VendorContext.Provider>
-      );
-}
+export default VendorProvider;

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { InventoryContext } from "../contexts/InventoryContext";
 import ProductList from "../components/inventory/ProductList";
-import ProductModal from "../components/modal/ProductModal";
+import ProductModal from "../components/inventory/modals/ProductModal";
 import InventorySummary from "../components/inventory/InventorySummary";
 import Notification from "../components/ui/Notification";
 import { useLocation, useNavigate } from "react-router-dom";

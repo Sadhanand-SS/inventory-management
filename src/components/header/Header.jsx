@@ -28,24 +28,24 @@ const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
 
   const { theme, toggleTheme } = useContext(ThemeContext);
-  
+
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/login');
-  }
+    navigate("/login");
+  };
 
   const handleLogout = () => {
     logout();
     navigate("/login", {
-        state: {
-          notification: {
-            type: "success",
-            message: "Logged out successfully",
-          },
+      state: {
+        notification: {
+          type: "success",
+          message: "Logged out successfully",
         },
-      });
-  }
+      },
+    });
+  };
 
   return (
     <header className="app-header">
@@ -60,14 +60,10 @@ const Header = () => {
           <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (
-        <button
-          onClick={handleLogin}
-        >
-          Login
-        </button>
+        <button onClick={handleLogin}>Login</button>
       )}
     </header>
   );
 };
 
-export default Header; 
+export default Header;
