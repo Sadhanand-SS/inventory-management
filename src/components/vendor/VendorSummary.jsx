@@ -12,8 +12,8 @@ const VendorSummary = ({ vendor, onEdit }) => {
     setEditOpen(false);
   };
 
-  const handleSubmitVendor = (vendorDraft) => {
-    const result = onEdit(vendorDraft);
+  const handleSubmitVendor = async (vendorDraft) => {
+    const result = await onEdit(vendorDraft);
 
     if (result.success) {
       closeModal();

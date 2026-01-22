@@ -65,14 +65,15 @@ Throws error if used outside AuthProvider
 
 Used by Header and Pages
 
-🧭 Routing & Providers (main.jsx)
+🧭 Routing \& Providers (main.jsx)
 
 Provider order is intentional:
 
 ThemeProvider
 └── AuthProvider
-    └── InventoryProvider
-        └── App
+└── InventoryProvider
+└── App
+
 
 
 This ensures:
@@ -113,6 +114,7 @@ Route state is consumed and cleared
 navigate(location.pathname, { replace: true, state: null });
 
 
+
 This ensures:
 
 Notification shows once
@@ -127,6 +129,7 @@ LoginPage (LoginPage.jsx)
 Controlled form with object state:
 
 { username, password }
+
 
 
 Uses useAuth().login
@@ -233,4 +236,352 @@ patterns that scale when needed, not before
 all the code files are given in the code context you can access them.
 
 
+
 The goal is not just to build features, but to build correct mental models.
+
+
+
+────────────────────────────────────────────────────────
+
+📈 Project Progress Update (After Initial README)
+
+
+
+This section documents changes and additions made AFTER the initial README
+
+was written. The original content above remains unchanged by design.
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+🧭 Updated Application Flow
+
+
+
+Authentication Flow
+
+\- User must login at `/login`
+
+\- Based on role:
+
+&nbsp; - Admin → redirected to `/vendors`
+
+&nbsp; - Vendor → redirected to `/inventory/:vendorId`
+
+\- No anonymous access is allowed anywhere in the app
+
+
+
+Authorization Flow (Route Guards)
+
+\- RequireAuth
+
+&nbsp; - Protects all authenticated routes
+
+\- RequireAdmin
+
+&nbsp; - Admin-only access:
+
+&nbsp;   - `/vendors`
+
+&nbsp;   - `/vendors/:vendorId`
+
+\- RequireVendor
+
+&nbsp; - Vendor-only access:
+
+&nbsp;   - `/inventory/:vendorId`
+
+\- Unauthorized access redirects to `/unauthorized`
+
+&nbsp; - User is NOT auto-logged out
+
+&nbsp; - Page is informational only
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+🏢 Vendor Domain (Admin Only)
+
+
+
+New Capabilities
+
+\- Admin can:
+
+&nbsp; - View list of vendors (`/vendors`)
+
+&nbsp; - Add vendors
+
+&nbsp; - Delete vendors
+
+&nbsp; - Navigate to vendor detail page
+
+
+
+Vendor Detail Page (`/vendors/:vendorId`)
+
+\- Centralized admin workspace for a single vendor
+
+\- Contains:
+
+&nbsp; - VendorSummary
+
+&nbsp;   - Displays full vendor details
+
+&nbsp;   - Edit vendor details (only here)
+
+&nbsp; - InventoryPage
+
+&nbsp;   - Shows products belonging ONLY to this vendor
+
+
+
+Design Decisions
+
+\- Vendor editing is NOT allowed on `/vendors`
+
+\- Vendor editing is centralized in VendorDetailPage
+
+\- VendorContext handles data + validation only
+
+\- UI and routing logic are kept out of context
+
+
+
+Vendor Validation
+
+\- vendorHelper.js introduced
+
+\- Validates vendor object shape for:
+
+&nbsp; - Add vendor
+
+&nbsp; - Update vendor
+
+\- Validation is frontend-only (no backend yet)
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+📦 Inventory Domain (Vendor-Scoped)
+
+
+
+Major Change
+
+\- Inventory is ALWAYS vendor-scoped
+
+\- There is no global inventory view
+
+
+
+Inventory Access
+
+\- Vendor:
+
+&nbsp; - `/inventory/:vendorId`
+
+\- Admin:
+
+&nbsp; - Accesses inventory only via `/vendors/:vendorId`
+
+
+
+InventoryPage Responsibilities
+
+\- Resolves activeVendorId from:
+
+&nbsp; - route param OR
+
+&nbsp; - parent prop (admin flow)
+
+\- Filters products by vendorId at page level
+
+\- Injects vendorId on product ADD
+
+\- Preserves vendorId on product EDIT
+
+\- No role logic inside InventoryContext
+
+
+
+Product Shape (Finalized)
+
+\- Product object shape is now locked:
+
+
+
+&nbsp; {
+
+&nbsp;   id,
+
+&nbsp;   vendorId,
+
+&nbsp;   name,
+
+&nbsp;   price,
+
+&nbsp;   quantity,
+
+&nbsp;   category
+
+&nbsp; }
+
+
+
+Product Validation
+
+\- helpers.js renamed to inventoryHelper.js
+
+\- Validation enforces:
+
+&nbsp; - Required fields
+
+&nbsp; - vendorId presence for add/edit
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+🧠 Architecture Refinements
+
+
+
+Contexts
+
+\- AuthContext
+
+&nbsp; - Auth state only
+
+\- VendorContext
+
+&nbsp; - Vendor CRUD + validation
+
+\- InventoryContext
+
+&nbsp; - Product CRUD + validation
+
+
+
+Important Rule:
+
+Contexts do NOT:
+
+\- Handle routing
+
+\- Handle authorization
+
+\- Handle UI state
+
+
+
+Pages decide intent.
+
+Contexts validate and mutate data.
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+🔔 Notification Pattern (Extended)
+
+
+
+\- Notification system retained as route-scoped
+
+\- Notifications are now used for:
+
+&nbsp; - Vendor add/update/delete
+
+&nbsp; - Product add/update/delete
+
+&nbsp; - Auth flows
+
+\- No NotificationContext introduced
+
+\- Notifications are cleared after display
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+⚙️ React Hooks Usage (Current)
+
+
+
+useRef
+
+\- Used for DOM focus:
+
+&nbsp; - ProductForm
+
+&nbsp; - VendorForm
+
+\- Used only for imperative or non-UI concerns
+
+\- No misuse as state replacement
+
+
+
+useCallback / useMemo
+
+\- Not yet applied
+
+\- Planned as a learning phase after core logic stabilized
+
+
+
+────────────────────────────────────────────────────────
+
+
+
+🚧 Current State of the Project
+
+
+
+✔ Authentication \& Authorization complete  
+
+✔ Vendor management complete (Admin)  
+
+✔ Vendor-scoped inventory complete  
+
+✔ Validation layers in place  
+
+✔ Route guards implemented  
+
+✔ No persistence (by design)  
+
+
+
+Next Planned Steps
+
+\- Learn and apply useCallback
+
+\- Learn and apply useMemo
+
+\- Backend integration (ASP.NET Core, EF, PostgreSQL)
+
+\- UI enhancement using Material UI
+
+
+
+────────────────────────────────────────────────────────
+
+
+

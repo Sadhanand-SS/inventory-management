@@ -1,3 +1,4 @@
+import React from "react";
 import ProductItem from "./ProductItem";
 
 /**
@@ -9,7 +10,7 @@ import ProductItem from "./ProductItem";
  * - Render list
  * - Forward edit intent upward
  */
-const ProductList = ({ products, onEdit, onDelete }) => {
+const ProductList = React.memo(({ products, onEdit, onDelete }) => {
   if (products.length === 0) {
     return <p>No products available.</p>;
   }
@@ -26,6 +27,6 @@ const ProductList = ({ products, onEdit, onDelete }) => {
       ))}
     </ul>
   );
-};
+});
 
 export default ProductList;

@@ -1,0 +1,138 @@
+import { useContext, useState, useEffect, useMemo, useCallback } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { VendorContext } from "../../contexts/VendorContext";
+import { InventoryContext } from "../../contexts/InventoryContext";
+import InventorySummary from "../../components/inventory/InventorySummary";
+import ProductList from "../../components/inventory/ProductList";
+import ProductModal from "../../components/inventory/modals/ProductModal";
+import Notification from "../../components/ui/Notification";
+
+const AdminVendorInventoryPage = ({ vendorId: propVendorId }) => {
+  const { vendorId: routeVendorId } = useParams;
+
+  const activeVendorId = propVendorId || routeVendorId;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { vendors } = useContext(VendorContext);
+  const { products, addProduct, updateProduct, deleteProduct } =
+    useContext(InventoryContext);
+
+  const [editorState, setEditorState] = useState({
+    open: false,
+    initialProduct: null,
+  });
+
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.notification) {
+      setNotification(location.state.notification);
+
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, navigate]);
+
+  const vendorProducts = useMemo(() => {
+    return products.filter((p) => p.vendorId === activeVendorId);
+  }, [products, activeVendorId]);
+
+  const handleAddClick = () => {
+    setEditorState({
+      open: true,
+      initialProduct: {},
+    });
+  };
+
+  const handleEditClick = useCallback((product) => {
+    setEditorState({
+      open: true,
+      initialProduct: product,
+    });
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setEditorState({
+      open: false,
+      initialProduct: null,
+    });
+  }, []);
+
+  const handleDeleteProduct = useCallback(
+    async (productId) => {
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this product ?",
+      );
+
+      if (!isConfirmed) return;
+
+      const result = await deleteProduct(productId);
+
+      if (result.success) {
+        setNotification({
+          type: "success",
+          message: "Product deleted successfully",
+        });
+      } else {
+        setNotification({
+          type: "error",
+          message: result.error,
+        });
+      }
+    },
+    [deleteProduct],
+  );
+
+  const handleSubmitProduct = useCallback(
+    async (productDraft) => {
+      const result = editorState.initialProduct?.id
+        ? await updateProduct(productDraft)
+        : await addProduct({ ...productDraft, vendorId: activeVendorId });
+
+      if (result.success) {
+        setNotification({
+          type: "success",
+          message: "Product saved Successfully",
+        });
+
+        closeModal();
+      } else {
+        setNotification({
+          type: "error",
+          message: result.error,
+        });
+      }
+    },
+    [editorState.initialProduct, addProduct, updateProduct, closeModal],
+  );
+
+  return (
+    <div className="inventory-page">
+      {notification && (
+        <Notification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
+      <InventorySummary products={vendorProducts} />
+      <button onClick={handleAddClick}>Add Product</button>
+      <ProductList
+        products={vendorProducts}
+        onEdit={handleEditClick}
+        onDelete={handleDeleteProduct}
+      />
+
+      {editorState.open && (
+        <ProductModal
+          product={editorState.initialProduct}
+          onClose={closeModal}
+          onSubmit={handleSubmitProduct}
+        />
+      )}
+    </div>
+  );
+};
+
+export default AdminVendorInventoryPage;

@@ -3,7 +3,7 @@ import {
   isValidObject,
   REQUIRED_FIELDS_ADD,
   REQUIRED_FIELDS_UPDATE,
-} from "../utils/helper.js";
+} from "../utils/inventoryHelper.js";
 
 /**
  * InventoryContext

@@ -1,6 +1,7 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const VendorItem = ({ vendor, onDelete }) => {
+const VendorItem = React.memo(({ vendor, onDelete }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -16,6 +17,6 @@ const VendorItem = ({ vendor, onDelete }) => {
       <button onClick={() => onDelete(vendor.vendorId)}>Delete</button>
     </li>
   );
-};
+});
 
 export default VendorItem;

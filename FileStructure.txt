@@ -1,46 +1,75 @@
-src/
+inventory-management/
+├── .git/
+├── node_modules/
+├── public/
 │
-├── App.jsx
-├── main.jsx
+├── src/
+│   ├── assets/
+│   │
+│   ├── components/
+│   │   ├── auth/
+│   │   │   ├── RequireAdmin.jsx
+│   │   │   ├── RequireAuth.jsx
+│   │   │   └── RequireVendor.jsx
+│   │   │
+│   │   ├── header/
+│   │   │   ├── Header.jsx
+│   │   │   └── Header.css
+│   │   │
+│   │   ├── inventory/
+│   │   │   ├── InventorySummary.jsx
+│   │   │   ├── ProductItem.jsx
+│   │   │   ├── ProductList.jsx
+│   │   │   └── modals/
+│   │   │       ├── ProductForm.jsx
+│   │   │       └── ProductModal.jsx
+│   │   │
+│   │   ├── vendor/
+│   │   │   ├── VendorItem.jsx
+│   │   │   ├── VendorList.jsx
+│   │   │   ├── VendorSummary.jsx
+│   │   │   └── modals/
+│   │   │       ├── VendorForm.jsx
+│   │   │       └── VendorModal.jsx
+│   │   │
+│   │   └── ui/
+│   │       ├── Notification.jsx
+│   │       └── Notification.css
+│   │
+│   ├── contexts/
+│   │   ├── ThemeContext.jsx
+│   │   ├── InventoryContext.jsx
+│   │   ├── AuthContext.jsx
+│   │   ├── VendorContext.jsx
+│   │
+│   ├── hooks/
+│   │   └── useAuth.js
+│   │
+│   ├── layouts/
+│   │   └── MainLayout.jsx
+│   │
+│   ├── pages/
+│   │   ├── InventoryPage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── UnauthorizedPage.jsx
+│   │   ├── VendorDetailPage.jsx
+│   │   └── VendorsPage.jsx
+│   │
+│   ├── utils/
+│   │   ├── formatters.js
+│   │   ├── inventoryHelper.js
+│   │   └── vendorHelper.js
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 │
-├── contexts/
-│ ├── ThemeContext.jsx
-│ └── InventoryContext.jsx
-│ ├── AuthContext.jsx
-│
-├── layouts/
-│ └── MainLayout.jsx
-│
-├── components/
-│ ├── header/
-│ │ ├── Header.jsx
-│ │ └── ThemeToggle.jsx // Not yet created
-│ │
-│ ├── hooks/
-│ │ ├── useAuth.js
-│ │
-│ ├── inventory/
-│ │ ├── ProductList.jsx
-│ │ ├── ProductItem.jsx
-│ │ └── InventorySummary.jsx 
-│ │
-│ ├── modal/
-│ │ ├── ProductModal.jsx
-│ │ └── ProductForm.jsx
-│ │
-│ ├── pages/
-│ │ ├── InventoryPage.jsx
-│ │ └── LoginPage.jsx
-│ │
-│ └── ui/
-│ ├── Button.jsx // Not yet created
-│ └── Input.jsx // Not yet created
-│ └── Notification.jsx 
-│
-├── styles/
-│ ├── theme.css // Not yet created
-│ └── global.css // Not yet created
-│
-└── utils/
-  └── helpers.js
-  └── formatter.js
+├── index.html
+├── .gitignore
+├── eslint.config.js
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── README.md
+├── FileStructure.txt
+└── Intro.txt

@@ -1,5 +1,11 @@
 import { createContext, useState } from "react";
 
+import {
+  isValidObject,
+  REQUIRED_FIELDS_ADD,
+  REQUIRED_FIELDS_UPDATE,
+} from "../utils/vendorHelper.js";
+
 export const VendorContext = createContext(null);
 
 const VendorProvider = ({ children }) => {
@@ -25,6 +31,12 @@ const VendorProvider = ({ children }) => {
   ]);
 
   const addVendor = (vendorDraft) => {
+    if (!isValidObject(vendorDraft, REQUIRED_FIELDS_ADD))
+      return {
+        success: false,
+        error: "INVALID_VENDOR_DETAILS",
+      };
+
     setVendors((prevVendors) => [
       ...prevVendors,
       { ...vendorDraft, vendorId: `V-${Date.now()}` },
@@ -33,10 +45,16 @@ const VendorProvider = ({ children }) => {
   };
 
   const updateVendor = (vendor) => {
+    if (!isValidObject(vendor, REQUIRED_FIELDS_UPDATE))
+      return {
+        success: false,
+        error: "INVALID_VENDOR_DETAILS",
+      };
+
     setVendors((prevVendors) =>
       prevVendors.map((p) =>
-        p.vendorId === vendor.vendorId ? { ...p, ...vendor } : p
-      )
+        p.vendorId === vendor.vendorId ? { ...p, ...vendor } : p,
+      ),
     );
     return { success: true };
   };
@@ -45,7 +63,7 @@ const VendorProvider = ({ children }) => {
     return new Promise((resolve) => {
       setVendors((prevVendors) => {
         const exists = prevVendors.some(
-          (vendor) => vendor.vendorId === vendorId
+          (vendor) => vendor.vendorId === vendorId,
         );
 
         if (!exists) {

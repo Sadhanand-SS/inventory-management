@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * ProductForm
@@ -15,13 +15,18 @@ const ProductForm = ({ product, onSubmit }) => {
    * Prefill inputs when editing.
    * Empty string fallback for ADD mode.
    */
-
+  const isSubmittingRef = useRef(false);
+  const nameInputRef = useRef(null);
   const safeProduct = product || {};
 
   const [name, setName] = useState(safeProduct.name || "");
   const [price, setPrice] = useState(safeProduct.price || "");
   const [quantity, setQuantity] = useState(safeProduct.quantity || "");
   const [category, setCategory] = useState(safeProduct.category || "");
+
+  useEffect(() => {
+    if (nameInputRef.current) nameInputRef.current.focus();
+  }, []);
 
   /**
    * Submit handler.
@@ -30,6 +35,8 @@ const ProductForm = ({ product, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     const updatedProduct = {
       ...product, // preserves id during EDIT
       name: name.trim(),
@@ -48,6 +55,7 @@ const ProductForm = ({ product, onSubmit }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
+        ref={nameInputRef}
       />
 
       <input

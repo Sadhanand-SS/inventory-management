@@ -1,6 +1,8 @@
+import React from "react";
+
 import { formatPrice, formatQuantity } from "../../utils/formatters";
 
-const ProductItem = ({ product, onEdit, onDelete }) => {
+const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
   return (
     <li className="product-item">
       <span>{product.name}</span>
@@ -11,6 +13,6 @@ const ProductItem = ({ product, onEdit, onDelete }) => {
       <button onClick={() => onDelete(product.id)}>Delete</button>
     </li>
   );
-};
+});
 
 export default ProductItem;

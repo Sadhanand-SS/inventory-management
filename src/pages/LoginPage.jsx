@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Notification from "../components/ui/Notification";
@@ -45,10 +45,18 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const usernameRef = useRef(null);
+
   /**
    * Consume route-scoped notification (flash message).
    * Clears route state after displaying once.
    */
+  useEffect(() => {
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
+
   useEffect(() => {
     if (location.state?.notification) {
       setNotification(location.state.notification);
@@ -130,6 +138,7 @@ const LoginPage = () => {
             type="text"
             name="username"
             value={userCredentials.username}
+            ref={usernameRef}
             onChange={handleChange}
           />
         </div>

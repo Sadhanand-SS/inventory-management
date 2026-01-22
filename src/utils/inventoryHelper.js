@@ -1,4 +1,10 @@
-export const REQUIRED_FIELDS_ADD = ["vendorId", "name", "price", "quantity", "category"];
+export const REQUIRED_FIELDS_ADD = [
+  "vendorId",
+  "name",
+  "price",
+  "quantity",
+  "category",
+];
 export const REQUIRED_FIELDS_UPDATE = [
   "id",
   "vendorId",
@@ -18,6 +24,6 @@ export function isValidObject(obj, requiredFields = REQUIRED_FIELDS_ADD) {
       Object.prototype.hasOwnProperty.call(obj, key) &&
       obj[key] !== null &&
       obj[key] !== undefined &&
-      obj[key] !== ""
+      obj[key] !== "",
   );
 }

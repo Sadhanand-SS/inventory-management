@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import VendorSummary from "../components/vendor/VendorSummary";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { VendorContext } from "../contexts/VendorContext";
 import Notification from "../components/ui/Notification";
-import InventoryPage from "./InventoryPage";
+import AdminVendorInventoryPage from "./inventory/AdminVendorInventoryPage";
 
 const VendorDetailPage = () => {
   const { vendorId } = useParams();
@@ -11,25 +11,30 @@ const VendorDetailPage = () => {
 
   const [notification, setNotification] = useState(null);
 
-  const handleVendorUpdate = (updatedVendor) => {
-    const result = updateVendor(updatedVendor);
+  const handleVendorUpdate = useCallback(
+    async (updatedVendor) => {
+      const result = await updateVendor(updatedVendor);
 
-    if (result.success) {
-      setNotification({
-        type: "success",
-        message: "Vendor updated successfully",
-      });
-    } else {
-      setNotification({
-        type: "error",
-        message: result.error,
-      });
-    }
+      if (result.success) {
+        setNotification({
+          type: "success",
+          message: "Vendor updated successfully",
+        });
+      } else {
+        setNotification({
+          type: "error",
+          message: result.error,
+        });
+      }
 
-    return result;
-  };
+      return result;
+    },
+    [updateVendor],
+  );
 
-  const currentVendor = vendors.find((vendor) => vendor.vendorId === vendorId);
+  const currentVendor = useMemo(() => {
+    return vendors.find((vendor) => vendor.vendorId === vendorId);
+  }, [vendors, vendorId]);
 
   return (
     <div className="vendor-detail-page">
@@ -41,7 +46,7 @@ const VendorDetailPage = () => {
         />
       )}
       <VendorSummary vendor={currentVendor} onEdit={handleVendorUpdate} />
-      <InventoryPage vendorId={vendorId} />
+      <AdminVendorInventoryPage vendorId={vendorId} />
     </div>
   );
 };

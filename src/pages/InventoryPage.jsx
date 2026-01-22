@@ -1,10 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback, useMemo } from "react";
 import { InventoryContext } from "../contexts/InventoryContext";
 import ProductList from "../components/inventory/ProductList";
 import ProductModal from "../components/inventory/modals/ProductModal";
 import InventorySummary from "../components/inventory/InventorySummary";
 import Notification from "../components/ui/Notification";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { VendorContext } from "../contexts/VendorContext";
 
 /**
  * InventoryPage
@@ -24,7 +25,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
  * Single source of truth for UI flow:
  * `editorState`
  */
-const InventoryPage = ({vendorId : propVendorId}) => {
+const InventoryPage = ({ vendorId: propVendorId }) => {
   /**
    * editorState
    * -----------
@@ -44,9 +45,9 @@ const InventoryPage = ({vendorId : propVendorId}) => {
    * It is NOT the submitted data.
    */
 
-  const {vendorId : routeVendorId} = useParams();
+  const { vendorId: routeVendorId } = useParams();
 
-  const activeVendorId = propVendorId || routeVendorId; 
+  const activeVendorId = propVendorId || routeVendorId;
 
   const [editorState, setEditorState] = useState({
     open: false,
@@ -67,8 +68,15 @@ const InventoryPage = ({vendorId : propVendorId}) => {
    */
   const { products, addProduct, updateProduct, deleteProduct } =
     useContext(InventoryContext);
+  const { vendors } = useContext(VendorContext);
 
-  const vendorProducts = products.filter(p => p.vendorId === activeVendorId);
+  const isUserAvailable = vendors.some((vendor) => vendor.vendorId === activeVendorId);
+
+  console.log(isUserAvailable);
+
+  const vendorProducts = useMemo(() => {
+    return products.filter((p) => p.vendorId === activeVendorId);
+  }, [products, activeVendorId]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -98,22 +106,21 @@ const InventoryPage = ({vendorId : propVendorId}) => {
    * @param {Object} product
    * Existing Product to be edited.
    */
-  const handleEditClick = (product) => {
+  const handleEditClick = useCallback((product) => {
     setEditorState({
       open: true,
       initialProduct: product,
     });
-  };
-
+  }, []);
   /**
    * Closes the modal and resets editor state.
    */
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setEditorState({
       open: false,
       initialProduct: null,
     });
-  };
+  }, []);
 
   /**
    * Handles form submission.
@@ -125,25 +132,34 @@ const InventoryPage = ({vendorId : propVendorId}) => {
    * - productDraft is the authoritative submitted data
    * - initialProduct is used ONLY to determine ADD vs EDIT
    */
-  const handleSubmitProduct = async (productDraft) => {
-    const result = editorState.initialProduct?.id
-      ? await updateProduct(productDraft)
-      : await addProduct({ ...productDraft, vendorId: activeVendorId });
+  const handleSubmitProduct = useCallback(
+    async (productDraft) => {
+      const result = editorState.initialProduct?.id
+        ? await updateProduct(productDraft)
+        : await addProduct({ ...productDraft, vendorId: activeVendorId });
 
-    if (result.success) {
-      setNotification({
-        type: "success",
-        message: "Product Saved Successfully",
-      });
+      if (result.success) {
+        setNotification({
+          type: "success",
+          message: "Product Saved Successfully",
+        });
 
-      closeModal();
-    } else {
-      setNotification({
-        type: "error",
-        message: result.error,
-      });
-    }
-  };
+        closeModal();
+      } else {
+        setNotification({
+          type: "error",
+          message: result.error,
+        });
+      }
+    },
+    [
+      editorState.initialProduct,
+      updateProduct,
+      addProduct,
+      activeVendorId,
+      closeModal,
+    ],
+  );
 
   /**
    * Handles deletion of a product.
@@ -151,27 +167,30 @@ const InventoryPage = ({vendorId : propVendorId}) => {
    * @param {number} productId
    * Identifier of product to remove.
    */
-  const handleDeleteProduct = async (productId) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
+  const handleDeleteProduct = useCallback(
+    async (productId) => {
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this product?",
+      );
 
-    if (!isConfirmed) return;
+      if (!isConfirmed) return;
 
-    const result = await deleteProduct(productId);
+      const result = await deleteProduct(productId);
 
-    if (result.success) {
-      setNotification({
-        type: "success",
-        message: "Product deleted successfully",
-      });
-    } else {
-      setNotification({
-        type: "error",
-        message: result.error,
-      });
-    }
-  };
+      if (result.success) {
+        setNotification({
+          type: "success",
+          message: "Product deleted successfully",
+        });
+      } else {
+        setNotification({
+          type: "error",
+          message: result.error,
+        });
+      }
+    },
+    [deleteProduct],
+  );
 
   return (
     <div className="inventory-page">

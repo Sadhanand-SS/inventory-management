@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
-import InventoryPage from "./pages/InventoryPage";
 import LoginPage from "./pages/LoginPage";
 import RequireAuth from "./components/auth/RequireAuth";
 import VendorsPage from "./pages/VendorsPage";
 import VendorDetailPage from "./pages/VendorDetailPage";
+import RequireAdmin from "./components/auth/RequireAdmin";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import VendorInventoryPage from "./pages/inventory/VendorInventoryPage";
 
 /**
  * App.jsx
@@ -34,7 +36,7 @@ const App = () => {
             path="/inventory/:vendorId"
             element={
               <RequireAuth>
-                <InventoryPage />
+                <VendorInventoryPage />
               </RequireAuth>
             }
           />
@@ -45,7 +47,9 @@ const App = () => {
             path="/vendors"
             element={
               <RequireAuth>
-                <VendorsPage />
+                <RequireAdmin>
+                  <VendorsPage />
+                </RequireAdmin>
               </RequireAuth>
             }
           />
@@ -54,10 +58,13 @@ const App = () => {
             path="/vendors/:vendorId"
             element={
               <RequireAuth>
-                <VendorDetailPage />
+                <RequireAdmin>
+                  <VendorDetailPage />
+                </RequireAdmin>
               </RequireAuth>
             }
           />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
           {/* <Route path="*" element={<Navigate to="Hello" />} /> */}
         </Routes>
