@@ -3,12 +3,23 @@ import VendorForm from "./VendorForm";
 const VendorModal = ({ vendor, onClose, onSubmit }) => {
   return (
     <div className="modal-overlay">
-      <div className="modal-container">
-        <h2>{vendor.vendorId ? "Edit Vendor" : "Add Vendor"}</h2>
+      <div className="modal-container vendor-modal">
+        <div className="modal-header">
+          <h2 className="modal-title">
+            {vendor.vendorId ? "Edit Vendor" : "Add Vendor"}
+          </h2>
+        </div>
 
-        <VendorForm vendor={vendor} onSubmit={onSubmit} />
+        <div className="modal-body">
+          {/* VendorForm receives vendor for prefill */}
+          <VendorForm vendor={vendor} onSubmit={onSubmit} />
+        </div>
 
-        <button onClick={onClose}>Cancel</button>
+        <div className="modal-footer">
+          <button className="btn-modal-cancel" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

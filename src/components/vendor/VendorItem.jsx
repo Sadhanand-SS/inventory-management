@@ -10,11 +10,35 @@ const VendorItem = React.memo(({ vendor, onDelete }) => {
 
   return (
     <li className="vendor-item">
-      <span onClick={handleClick} style={{ cursor: "pointer" }}>
-        {vendor.name}
-      </span>
-      <span>{vendor.status}</span>
-      <button onClick={() => onDelete(vendor.vendorId)}>Delete</button>
+      <div className="vendor-item-content">
+        <div className="vendor-primary-info">
+          <span
+            className="vendor-clickable-name"
+            onClick={handleClick}
+            style={{ cursor: "pointer" }}
+          >
+            {vendor.name}
+          </span>
+        </div>
+
+        <div className="vendor-secondary-info">
+          <span
+            className={`vendor-status-pill status-${vendor.status.toLowerCase()}`}
+          >
+            {vendor.status}
+          </span>
+        </div>
+      </div>
+
+      <div className="vendor-item-actions">
+        <button
+          className="btn-delete-vendor"
+          onClick={() => onDelete(vendor.vendorId)}
+          aria-label={`Delete ${vendor.name}`}
+        >
+          Delete
+        </button>
+      </div>
     </li>
   );
 });

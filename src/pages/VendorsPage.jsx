@@ -77,24 +77,48 @@ const VendorsPage = () => {
 
   return (
     <div className="vendors-page">
-      {notification && (
-        <Notification
-          type={notification.type}
-          message={notification.message}
-          onClose={() => setNotification(null)}
-        />
-      )}
+      <div className="page-container">
+        {notification && (
+          <div className="notification-container">
+            <Notification
+              type={notification.type}
+              message={notification.message}
+              onClose={() => setNotification(null)}
+            />
+          </div>
+        )}
 
-      <button onClick={handleAddClick}>Add Vendor</button>
-      <VendorList vendors={vendors} onDelete={handleDeleteVendor} />
+        <div className="page-header">
+          <div className="header-text">
+            <h1 className="page-title">Vendor Directory</h1>
+            <p className="page-description">
+              Manage and monitor all registered product vendors.
+            </p>
+          </div>
 
-      {isAddOpen && (
-        <VendorModal
-          vendor={{}}
-          onClose={closeModal}
-          onSubmit={handleSubmitVendor}
-        />
-      )}
+          <div className="header-actions">
+            <button className="btn-add-primary" onClick={handleAddClick}>
+              <span className="icon">+</span> Add New Vendor
+            </button>
+          </div>
+        </div>
+
+        <main className="page-content">
+          <div className="list-card-view">
+            <VendorList vendors={vendors} onDelete={handleDeleteVendor} />
+          </div>
+        </main>
+
+        {isAddOpen && (
+          <div className="modal-layer">
+            <VendorModal
+              vendor={{}}
+              onClose={closeModal}
+              onSubmit={handleSubmitVendor}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

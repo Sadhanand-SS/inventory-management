@@ -1,0 +1,69 @@
+Product {
+  // ─────────────────────────────
+  // Identity & Ownership
+  // ─────────────────────────────
+  productId: string,                // Unique product identifier (UUID).
+  vendorId: string,                 // Ownership. Links product to vendor.
+
+  // ─────────────────────────────
+  // Core Product Info
+  // ─────────────────────────────
+  name: string,                     // Product title.
+  description: string,              // Inventory description (not marketing copy).
+  category: string,                 // Primary classification.
+  subCategory?: string,             // Optional deeper grouping.
+  brand?: string,                   // Brand attribution.
+
+  // ─────────────────────────────
+  // Pricing (Amazon-style)
+  // ─────────────────────────────
+  pricing: {
+    mrp: number,                    // Legal maximum retail price (striked).
+    sellingPrice: number,           // Actual selling price.
+    currency: "INR",                // Fixed now, extensible later.
+    taxIncluded: boolean            // Whether GST/VAT is included.
+  },
+
+  // ─────────────────────────────
+  // Stock Control
+  // ─────────────────────────────
+  stock: {
+    quantity: number,               // Available inventory count.
+    lowStockThreshold: number        // Alert boundary (inventory health).
+  },
+
+  // ─────────────────────────────
+  // Identifiers (logistics & ops)
+  // ─────────────────────────────
+  identifiers: {
+    sku: string,                    // Internal stock keeping unit.
+    barcode?: string                // Optional UPC/EAN for scanning.
+  },
+
+  // ─────────────────────────────
+  // Product State
+  // ─────────────────────────────
+  status: {
+    isActive: boolean,              // Soft delete.
+                                   // false → product not sellable.
+    isVisible: boolean              // Listed or hidden from catalog.
+  },
+
+  // ─────────────────────────────
+  // Physical Metadata (future ops)
+  // ─────────────────────────────
+  metadata: {
+    weight?: number,                // grams. Needed for shipping later.
+    dimensions?: {
+      length: number,
+      width: number,
+      height: number
+    }
+  },
+
+  // ─────────────────────────────
+  // Audit
+  // ─────────────────────────────
+  createdAt: Date,                  // When product entered inventory.
+  updatedAt: Date                   // Last modification.
+}

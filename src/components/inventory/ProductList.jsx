@@ -16,16 +16,21 @@ const ProductList = React.memo(({ products, onEdit, onDelete }) => {
   }
 
   return (
-    <ul className="product-list">
-      {products.map((product) => (
-        <ProductItem
-          key={product.id}
-          product={product}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ))}
-    </ul>
+    <div className="product-list-container">
+      <ul className="product-list">
+        {products.map((product) => (
+          <li key={product.id} className="product-list-item">
+            <div className="product-item-wrapper">
+              <ProductItem
+                product={product}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 });
 

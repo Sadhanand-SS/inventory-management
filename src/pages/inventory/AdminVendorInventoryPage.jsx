@@ -107,30 +107,57 @@ const AdminVendorInventoryPage = ({ vendorId: propVendorId }) => {
   );
 
   return (
-    <div className="inventory-page">
-      {notification && (
-        <Notification
-          type={notification.type}
-          message={notification.message}
-          onClose={() => setNotification(null)}
-        />
-      )}
+    <div className="admin-inventory-page">
+      <div className="admin-container">
+        {notification && (
+          <div className="admin-notification-layer">
+            <Notification
+              type={notification.type}
+              message={notification.message}
+              onClose={() => setNotification(null)}
+            />
+          </div>
+        )}
 
-      <InventorySummary products={vendorProducts} />
-      <button onClick={handleAddClick}>Add Product</button>
-      <ProductList
-        products={vendorProducts}
-        onEdit={handleEditClick}
-        onDelete={handleDeleteProduct}
-      />
+        <div className="admin-view-header">
+          <div className="view-title-group">
+            <h2 className="admin-title">Vendor Inventory Management</h2>
+            <p className="admin-subtitle">
+              Reviewing stock and pricing for this specific vendor.
+            </p>
+          </div>
 
-      {editorState.open && (
-        <ProductModal
-          product={editorState.initialProduct}
-          onClose={closeModal}
-          onSubmit={handleSubmitProduct}
-        />
-      )}
+          <div className="admin-actions">
+            <button className="btn-add-item-admin" onClick={handleAddClick}>
+              <span className="btn-plus-icon">+</span> Add Product
+            </button>
+          </div>
+        </div>
+
+        <section className="admin-summary-wrapper">
+          <InventorySummary products={vendorProducts} />
+        </section>
+
+        <main className="admin-list-content">
+          <div className="table-wrapper">
+            <ProductList
+              products={vendorProducts}
+              onEdit={handleEditClick}
+              onDelete={handleDeleteProduct}
+            />
+          </div>
+        </main>
+
+        {editorState.open && (
+          <div className="admin-modal-root">
+            <ProductModal
+              product={editorState.initialProduct}
+              onClose={closeModal}
+              onSubmit={handleSubmitProduct}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

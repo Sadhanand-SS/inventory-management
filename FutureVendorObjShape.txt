@@ -1,0 +1,52 @@
+Vendor {
+  // ─────────────────────────────
+  // Identity
+  // ─────────────────────────────
+  vendorId: string,                 // Unique identifier (UUID). 
+                                    // Used across products, audits, DB relations.
+
+  businessName: string,              // Legal / display name of the seller.
+  contactName: string,               // Primary human contact for admin communication.
+
+  email: string,                     // Official communication & login identifier.
+  phone: string,                     // Operational contact (pickup, escalation).
+
+  // ─────────────────────────────
+  // Business Address (mandatory for inventory & compliance)
+  // ─────────────────────────────
+  address: {
+    line1: string,                   // Street / building.
+    line2?: string,                  // Optional.
+    city: string,                    // Used for logistics & tax rules later.
+    state: string,
+    pincode: string,
+    country: string
+  },
+
+  // ─────────────────────────────
+  // Verification & Lifecycle Control
+  // ─────────────────────────────
+  status: "PENDING" | "APPROVED" | "REJECTED",
+                                    // Signup workflow state.
+                                    // PENDING  → awaiting admin review
+                                    // APPROVED → accepted into platform
+                                    // REJECTED → permanently denied
+
+  isVerified: boolean,               // Admin has verified documents / legitimacy.
+                                    // REQUIRED before selling.
+
+  isActive: boolean,                 // Runtime kill-switch.
+                                    // false → inventory access blocked instantly
+                                    // Used for suspension, fraud, abuse.
+
+  // ─────────────────────────────
+  // Admin Metadata (non-business logic)
+  // ─────────────────────────────
+  adminNotes?: string,               // Internal notes (why rejected/suspended).
+
+  // ─────────────────────────────
+  // Audit
+  // ─────────────────────────────
+  createdAt: Date,                   // Signup timestamp.
+  updatedAt: Date                    // Last admin/vendor action.
+}

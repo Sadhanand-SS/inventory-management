@@ -20,8 +20,7 @@ const VendorForm = ({ vendor, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(isSubmittingRef.current)
-      return;
+    if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
     const updatedVendor = {
       ...vendor, // preserves id during EDIT
@@ -34,49 +33,76 @@ const VendorForm = ({ vendor, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        ref={nameInputRef}
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-
-      <div>
-        <label>
+    <form className="vendor-form" onSubmit={handleSubmit}>
+      <div className="form-sections">
+        {/* Text Inputs Section */}
+        <div className="form-group">
+          <label className="form-label" htmlFor="vendor-name">
+            Vendor Name
+          </label>
           <input
-            type="radio"
-            name="status"
-            value="active"
-            checked={status === "active"}
-            onChange={(e) => setStatus(e.target.value)}
+            id="vendor-name"
+            className="form-input"
+            ref={nameInputRef}
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
-          Active
-        </label>
+        </div>
 
-        <label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="vendor-email">
+            Email Address
+          </label>
           <input
-            type="radio"
-            name="status"
-            value="inactive"
-            checked={status === "inactive"}
-            onChange={(e) => setStatus(e.target.value)}
+            id="vendor-email"
+            className="form-input"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          Inactive
-        </label>
+        </div>
+
+        {/* Radio Group Section */}
+        <div className="form-group status-selection">
+          <span className="form-label">Vendor Status</span>
+          <div className="radio-group">
+            <label className="radio-label">
+              <input
+                className="radio-input"
+                type="radio"
+                name="status"
+                value="active"
+                checked={status === "active"}
+                onChange={(e) => setStatus(e.target.value)}
+              />
+              <span className="radio-text">Active</span>
+            </label>
+
+            <label className="radio-label">
+              <input
+                className="radio-input"
+                type="radio"
+                name="status"
+                value="inactive"
+                checked={status === "inactive"}
+                onChange={(e) => setStatus(e.target.value)}
+              />
+              <span className="radio-text">Inactive</span>
+            </label>
+          </div>
+        </div>
       </div>
 
-      <button type="submit">Save</button>
+      <div className="form-actions">
+        <button className="btn-save-vendor" type="submit">
+          Save Vendor Details
+        </button>
+      </div>
     </form>
   );
 };

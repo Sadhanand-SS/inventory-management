@@ -49,39 +49,75 @@ const ProductForm = ({ product, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        ref={nameInputRef}
-      />
+    <form className="product-form" onSubmit={handleSubmit}>
+      <div className="form-fields-container">
+        <div className="form-group">
+          <label className="form-label" htmlFor="name">
+            Product Name
+          </label>
+          <input
+            id="name"
+            className="form-input"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            ref={nameInputRef}
+          />
+        </div>
 
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        required
-      />
+        <div className="form-group-row">
+          <div className="form-group">
+            <label className="form-label" htmlFor="price">
+              Price
+            </label>
+            <input
+              id="price"
+              className="form-input"
+              type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
+          </div>
 
-      <input
-        type="number"
-        placeholder="Quantity"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-        required
-      />
+          <div className="form-group">
+            <label className="form-label" htmlFor="quantity">
+              Quantity
+            </label>
+            <input
+              id="quantity"
+              className="form-input"
+              type="number"
+              placeholder="Quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              required
+            />
+          </div>
+        </div>
 
-      <input
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        required
-      />
+        <div className="form-group">
+          <label className="form-label" htmlFor="category">
+            Category
+          </label>
+          <input
+            id="category"
+            className="form-input"
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          />
+        </div>
+      </div>
 
-      <button type="submit">Save</button>
+      <div className="form-actions">
+        <button className="btn-submit" type="submit">
+          Save Product
+        </button>
+      </div>
     </form>
   );
 };

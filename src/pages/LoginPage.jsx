@@ -120,46 +120,59 @@ const LoginPage = () => {
   };
 
   return (
-    <>
+    <div className="login-page-container">
       {notification && (
-        <Notification
-          type={notification.type}
-          message={notification.message}
-          onClose={() => setNotification(null)}
-        />
+        <div className="notification-wrapper">
+          <Notification
+            type={notification.type}
+            message={notification.message}
+            onClose={() => setNotification(null)}
+          />
+        </div>
       )}
 
-      <h1>Login Page</h1>
-
-      <form onSubmit={onLogin}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={userCredentials.username}
-            ref={usernameRef}
-            onChange={handleChange}
-          />
+      <div className="login-card">
+        <div className="login-header">
+          <h1 className="login-title">Login Page</h1>
+          <p className="login-subtitle">
+            Please enter your credentials to continue
+          </p>
         </div>
 
-        <br />
+        <form className="login-form" onSubmit={onLogin}>
+          <div className="form-group">
+            <label className="form-label">Username</label>
+            <input
+              className="form-input"
+              type="text"
+              name="username"
+              value={userCredentials.username}
+              ref={usernameRef}
+              onChange={handleChange}
+              placeholder="Enter your username"
+            />
+          </div>
 
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={userCredentials.password}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              className="form-input"
+              type="password"
+              name="password"
+              value={userCredentials.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+            />
+          </div>
 
-        <br />
-
-        <button type="submit">Login</button>
-      </form>
-    </>
+          <div className="form-actions">
+            <button className="btn-login-submit" type="submit">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

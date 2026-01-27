@@ -14,12 +14,22 @@ const ProductModal = ({ product, onClose, onSubmit }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2>{product.id ? "Edit Product" : "Add Product"}</h2>
+        <div className="modal-header">
+          <h2 className="modal-title">
+            {product.id ? "Edit Product" : "Add Product"}
+          </h2>
+        </div>
 
-        {/* ProductForm receives product for prefill */}
-        <ProductForm product={product} onSubmit={onSubmit} />
+        <div className="modal-body">
+          {/* ProductForm receives product for prefill */}
+          <ProductForm product={product} onSubmit={onSubmit} />
+        </div>
 
-        <button onClick={onClose}>Cancel</button>
+        <div className="modal-footer">
+          <button className="btn-cancel" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

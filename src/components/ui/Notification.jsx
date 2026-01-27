@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "./Notification.css";
+// import "./Notification.css";
 
 /**
  * Notification
@@ -18,13 +18,34 @@ const Notification = ({ type, message, onClose }) => {
   }, []);
 
   return (
-    <div className={`notification notification-${type}`}>
-      <span className="notification-content">{message}</span>
-      <button className="close-button" onClick={onClose}>
-        ✕
-      </button>
+    <div className={`notification-toast notification-${type}`}>
+      <div className="notification-wrapper">
+        <div className="notification-main">
+          <div className="notification-icon-container">
+            {/* Placeholder for a dynamic icon based on type */}
+            <span className="status-icon" aria-hidden="true"></span>
+          </div>
+
+          <div className="notification-body">
+            <span className="notification-content">{message}</span>
+          </div>
+        </div>
+
+        <div className="notification-actions">
+          <button
+            className="close-button"
+            onClick={onClose}
+            aria-label="Close notification"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
       {/* Visual countdown bar */}
-      <div className="progress-bar" />
+      <div className="progress-bar-container">
+        <div className="progress-bar" />
+      </div>
     </div>
   );
 };

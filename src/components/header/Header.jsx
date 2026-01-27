@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import useAuth from "../../hooks/useAuth";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import "./Header.css";
+// import "./Header.css";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -49,19 +49,30 @@ const Header = () => {
 
   return (
     <header className="app-header">
-      <h1>Product Inventory</h1>
-
-      <button onClick={toggleTheme}>
-        Switch to {theme === "light" ? "Dark" : "Light"} Mode
-      </button>
-      {isAuthenticated ? (
-        <div>
-          <span>{user.name}</span>
-          <button onClick={handleLogout}>Logout</button>
+      <div className="header-container">
+        <div className="header-branding">
+          <h1 className="header-title">Product Inventory</h1>
         </div>
-      ) : (
-        <button onClick={handleLogin}>Login</button>
-      )}
+
+        <div className="header-actions">
+          <button className="btn-theme-toggle" onClick={toggleTheme}>
+            Switch to {theme === "light" ? "Dark" : "Light"} Mode
+          </button>
+
+          {isAuthenticated ? (
+            <div className="user-profile">
+              <span className="user-name">{user.name}</span>
+              <button className="btn-logout" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button className="btn-login" onClick={handleLogin}>
+              Login
+            </button>
+          )}
+        </div>
+      </div>
     </header>
   );
 };

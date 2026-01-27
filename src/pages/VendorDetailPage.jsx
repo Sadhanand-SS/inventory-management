@@ -38,15 +38,34 @@ const VendorDetailPage = () => {
 
   return (
     <div className="vendor-detail-page">
-      {notification && (
-        <Notification
-          type={notification.type}
-          message={notification.message}
-          onClose={() => setNotification(null)}
-        />
-      )}
-      <VendorSummary vendor={currentVendor} onEdit={handleVendorUpdate} />
-      <AdminVendorInventoryPage vendorId={vendorId} />
+      <div className="detail-page-container">
+        {notification && (
+          <div className="notification-overlay">
+            <Notification
+              type={notification.type}
+              message={notification.message}
+              onClose={() => setNotification(null)}
+            />
+          </div>
+        )}
+
+        <header className="page-header">
+          <h1 className="page-title">Vendor Management</h1>
+        </header>
+
+        <main className="detail-content">
+          <section className="summary-section">
+            <VendorSummary vendor={currentVendor} onEdit={handleVendorUpdate} />
+          </section>
+
+          <section className="inventory-section">
+            <div className="section-header">
+              <h2 className="section-title">Vendor Inventory</h2>
+            </div>
+            <AdminVendorInventoryPage vendorId={vendorId} />
+          </section>
+        </main>
+      </div>
     </div>
   );
 };
