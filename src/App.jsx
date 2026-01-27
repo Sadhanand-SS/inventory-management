@@ -8,6 +8,9 @@ import VendorDetailPage from "./pages/VendorDetailPage";
 import RequireAdmin from "./components/auth/RequireAdmin";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import VendorInventoryPage from "./pages/inventory/VendorInventoryPage";
+import VendorSummary from "./components/vendor/VendorSummary";
+import AdminVendorInventoryPage from "./pages/inventory/AdminVendorInventoryPage";
+import VendorSettings from "./components/vendor/VendorSettings";
 
 /**
  * App.jsx
@@ -63,7 +66,12 @@ const App = () => {
                 </RequireAdmin>
               </RequireAuth>
             }
-          />
+          >
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<VendorSummary />} />
+            <Route path="inventory" element={<AdminVendorInventoryPage />} />
+            <Route path="settings" element={<VendorSettings />} />
+          </Route>
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
           {/* <Route path="*" element={<Navigate to="Hello" />} /> */}

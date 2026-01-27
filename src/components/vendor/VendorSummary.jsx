@@ -1,25 +1,11 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import VendorModal from "./modals/VendorModal";
 
-const VendorSummary = ({ vendor, onEdit }) => {
-  const [isEditOpen, setEditOpen] = useState(false);
+const VendorSummary = () => {
+  const { overview } = useOutletContext();
 
-  const handleEditClick = () => {
-    setEditOpen(true);
-  };
-
-  const closeModal = () => {
-    setEditOpen(false);
-  };
-
-  const handleSubmitVendor = async (vendorDraft) => {
-    const result = await onEdit(vendorDraft);
-
-    if (result.success) {
-      closeModal();
-    }
-  };
-
+  const { vendor } = overview;
   if (!vendor) {
     return <p>Loading vendor details...</p>;
   }
@@ -30,9 +16,6 @@ const VendorSummary = ({ vendor, onEdit }) => {
     <div className="vendor-summary-card">
       <div className="vendor-details-header">
         <h3 className="vendor-title">Vendor Information</h3>
-        <button className="btn-edit-vendor" onClick={handleEditClick}>
-          Edit Profile
-        </button>
       </div>
 
       <div className="vendor-info-grid">
@@ -58,16 +41,6 @@ const VendorSummary = ({ vendor, onEdit }) => {
           </span>
         </div>
       </div>
-
-      {isEditOpen && (
-        <div className="vendor-modal-overlay">
-          <VendorModal
-            vendor={vendor}
-            onClose={closeModal}
-            onSubmit={handleSubmitVendor}
-          />
-        </div>
-      )}
     </div>
   );
 };

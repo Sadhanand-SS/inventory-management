@@ -4,7 +4,7 @@ import { formatPrice, formatQuantity } from "../../utils/formatters";
 
 const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
   return (
-    <li className="product-item">
+    <div className="product-item">
       <div className="product-info-group">
         <div className="product-main-details">
           <span className="product-name">{product.name}</span>
@@ -27,7 +27,7 @@ const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
           Delete
         </button>
       </div>
-    </li>
+    </div>
   );
 });
 

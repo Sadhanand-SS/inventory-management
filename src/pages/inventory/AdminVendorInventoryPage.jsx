@@ -1,5 +1,10 @@
 import { useContext, useState, useEffect, useMemo, useCallback } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { VendorContext } from "../../contexts/VendorContext";
 import { InventoryContext } from "../../contexts/InventoryContext";
 import InventorySummary from "../../components/inventory/InventorySummary";
@@ -7,10 +12,12 @@ import ProductList from "../../components/inventory/ProductList";
 import ProductModal from "../../components/inventory/modals/ProductModal";
 import Notification from "../../components/ui/Notification";
 
-const AdminVendorInventoryPage = ({ vendorId: propVendorId }) => {
+const AdminVendorInventoryPage = () => {
+  const { inventory } = useOutletContext();
+  const { vendorId: outletVendorId } = inventory;
   const { vendorId: routeVendorId } = useParams;
 
-  const activeVendorId = propVendorId || routeVendorId;
+  const activeVendorId = outletVendorId || routeVendorId;
   const location = useLocation();
   const navigate = useNavigate();
 

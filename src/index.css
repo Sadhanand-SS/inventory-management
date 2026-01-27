@@ -337,3 +337,84 @@ button, .btn-submit, .btn-add-primary, .btn-login-submit, .btn-save-vendor {
 .login-header, .unauthorized-content {
   margin-bottom: 30px;
 }
+
+
+/* Specific additions for VendorSettings functionality */
+
+/* Keeps the layout identical but removes the 'interactive' look */
+.form-input.input-readonly {
+  background-color: #fcfcf9; /* Slightly lighter than bg-light */
+  border-color: rgba(215, 216, 182, 0.4);
+  color: var(--text-muted);
+  cursor: default;
+  box-shadow: none;
+}
+
+.form-input.input-readonly:focus {
+  border-color: rgba(215, 216, 182, 0.4);
+  box-shadow: none;
+}
+
+/* Styles for the radio buttons in read-only mode */
+.radio-disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.radio-disabled input {
+  cursor: default;
+}
+
+/* Aligning the header actions for better UI flow */
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure the form inside the card doesn't have extra padding if the card already has it */
+.summary-card .vendor-form {
+  gap: 32px; /* Increased gap for a cleaner profile look */
+}
+
+
+/* ==========================================================================
+   TAB NAVIGATION (Pills Style)
+   ========================================================================== */
+.tab-navigation {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--secondary-sand);
+  padding-bottom: 1px;
+}
+
+.tab-link {
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: var(--transition);
+  border-bottom: 3px solid transparent;
+}
+
+.tab-link:hover {
+  color: var(--primary-olive);
+  background: rgba(215, 216, 182, 0.2);
+}
+
+.tab-link.active {
+  color: var(--primary-olive);
+  border-bottom-color: var(--primary-olive);
+  background: white;
+}
+
+.tab-content-wrapper {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

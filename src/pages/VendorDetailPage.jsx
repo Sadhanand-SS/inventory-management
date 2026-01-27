@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
-import VendorSummary from "../components/vendor/VendorSummary";
 import { useCallback, useContext, useMemo, useState } from "react";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 import { VendorContext } from "../contexts/VendorContext";
 import Notification from "../components/ui/Notification";
-import AdminVendorInventoryPage from "./inventory/AdminVendorInventoryPage";
 
 const VendorDetailPage = () => {
   const { vendorId } = useParams();
@@ -29,42 +27,83 @@ const VendorDetailPage = () => {
 
       return result;
     },
-    [updateVendor],
+    [updateVendor]
   );
 
   const currentVendor = useMemo(() => {
     return vendors.find((vendor) => vendor.vendorId === vendorId);
   }, [vendors, vendorId]);
 
+  const overviewCtx = useMemo(
+    () => ({
+      vendor: currentVendor
+    }),
+    [currentVendor]
+  );
+
+  const inventoryCtx = useMemo(
+    () => ({
+      vendorId: vendorId,
+    }),
+    [vendorId]
+  );
+
+  const settingsCtx = useMemo(
+    () => ({
+      vendor: currentVendor,
+      onEdit: handleVendorUpdate,
+    }),
+    [currentVendor, handleVendorUpdate]
+  );
+
+  if (!currentVendor) return null;
+
   return (
-    <div className="vendor-detail-page">
-      <div className="detail-page-container">
-        {notification && (
-          <div className="notification-overlay">
-            <Notification
-              type={notification.type}
-              message={notification.message}
-              onClose={() => setNotification(null)}
-            />
+    <div className="detail-page-container">
+      {/* 1. Header Section */}
+      <header className="vendor-details-header">
+        <div className="view-title-group">
+          <h2 className="page-title">{currentVendor.name}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+            <span className="page-description">Vendor ID: {vendorId}</span>
+            <span className={`status-badge ${currentVendor.status === 'active' ? 'status-active' : 'status-inactive'}`}>
+              {currentVendor.status}
+            </span>
           </div>
-        )}
+        </div>
+      </header>
 
-        <header className="page-header">
-          <h1 className="page-title">Vendor Management</h1>
-        </header>
+      {/* 2. Navigation Tab Bar */}
+      <nav className="tab-navigation">
+        <NavLink end to="" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+          Overview
+        </NavLink>
+        <NavLink to="inventory" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+          Inventory
+        </NavLink>
+        <NavLink to="settings" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+          Settings
+        </NavLink>
+      </nav>
 
-        <main className="detail-content">
-          <section className="summary-section">
-            <VendorSummary vendor={currentVendor} onEdit={handleVendorUpdate} />
-          </section>
+      {/* 3. Notification Handling */}
+      {notification && (
+        <Notification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
 
-          <section className="inventory-section">
-            <div className="section-header">
-              <h2 className="section-title">Vendor Inventory</h2>
-            </div>
-            <AdminVendorInventoryPage vendorId={vendorId} />
-          </section>
-        </main>
+      {/* 4. Sub-route Content */}
+      <div className="tab-content-wrapper">
+        <Outlet
+          context={{
+            overview: overviewCtx,
+            inventory: inventoryCtx,
+            settings: settingsCtx,
+          }}
+        />
       </div>
     </div>
   );

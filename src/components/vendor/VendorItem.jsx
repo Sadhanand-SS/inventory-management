@@ -9,7 +9,7 @@ const VendorItem = React.memo(({ vendor, onDelete }) => {
   };
 
   return (
-    <li className="vendor-item">
+    <div className="vendor-item">
       <div className="vendor-item-content">
         <div className="vendor-primary-info">
           <span
@@ -39,7 +39,7 @@ const VendorItem = React.memo(({ vendor, onDelete }) => {
           Delete
         </button>
       </div>
-    </li>
+    </div>
   );
 });
 

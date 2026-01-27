@@ -1,0 +1,5 @@
+Topics to learn next : 
+1. Nested Roting
+2. Validation,
+3. HTML cSS basics
+4. Dom basics.
