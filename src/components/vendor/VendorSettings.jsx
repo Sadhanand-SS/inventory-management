@@ -23,8 +23,13 @@ const VendorSettings = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setVendorDraft((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+
+    setVendorDraft((prev) => ({
+      ...prev,
+      [name]:
+        type === "radio" && name === "isActive" ? value === "true" : value,
+    }));
   };
 
   const handleSubmitVendor = async (e) => {
@@ -40,20 +45,30 @@ const VendorSettings = () => {
       <header className="page-header">
         <div className="header-text">
           <h2 className="page-title">Vendor Settings</h2>
-          <p className="page-description">Manage your profile and account status</p>
+          <p className="page-description">
+            Manage your profile and account status
+          </p>
         </div>
-        
+
         <div className="header-actions">
           {!isEditOpen ? (
-            <button type="button" className="btn-edit" onClick={handleEditClick}>
+            <button
+              type="button"
+              className="btn-edit"
+              onClick={handleEditClick}
+            >
               Edit Settings
             </button>
           ) : (
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: "flex", gap: "12px" }}>
               <button type="button" className="btn-cancel" onClick={closeModal}>
                 Cancel
               </button>
-              <button type="submit" form="vendor-settings-form" className="btn-save-vendor">
+              <button
+                type="submit"
+                form="vendor-settings-form"
+                className="btn-save-vendor"
+              >
                 Save Changes
               </button>
             </div>
@@ -62,7 +77,11 @@ const VendorSettings = () => {
       </header>
 
       <div className="summary-card">
-        <form id="vendor-settings-form" onSubmit={handleSubmitVendor} className="vendor-form">
+        <form
+          id="vendor-settings-form"
+          onSubmit={handleSubmitVendor}
+          className="vendor-form"
+        >
           {/* Name Field */}
           <div className="form-group">
             <label className="form-label">Vendor Name</label>
@@ -93,29 +112,94 @@ const VendorSettings = () => {
           <div className="form-group">
             <label className="form-label">Account Status</label>
             <div className="radio-group">
-              <label className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}>
+              <label
+                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
+              >
                 <input
                   type="radio"
                   name="status"
-                  value="active"
-                  checked={vendorDraft.status === "active"}
+                  value="approved"
+                  checked={vendorDraft.status === "approved"}
                   onChange={handleChange}
                   disabled={!isEditOpen}
                 />
-                Active
+                Approved
               </label>
-              <label className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}>
+              <label
+                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
+              >
                 <input
                   type="radio"
                   name="status"
-                  value="inactive"
-                  checked={vendorDraft.status === "inactive"}
+                  value="pending"
+                  checked={vendorDraft.status === "pending"}
                   onChange={handleChange}
                   disabled={!isEditOpen}
                 />
-                Inactive
+                Pending
+              </label>
+              <label
+                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="status"
+                  value="rejected"
+                  checked={vendorDraft.status === "rejected"}
+                  onChange={handleChange}
+                  disabled={!isEditOpen}
+                />
+                Rejected
               </label>
             </div>
+          </div>
+
+          {/* isActive Radio Group */}
+          <div className="form-group">
+            <label className="form-label">Active</label>
+
+            <div className="radio-group">
+              <label
+                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="isActive"
+                  value="true"
+                  checked={vendorDraft.isActive === true}
+                  onChange={handleChange}
+                  disabled={!isEditOpen}
+                />
+                Yes
+              </label>
+
+              <label
+                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="isActive"
+                  value="false"
+                  checked={vendorDraft.isActive === false}
+                  onChange={handleChange}
+                  disabled={!isEditOpen}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Notes Field */}
+          <div className="form-group">
+            <label className="form-label">Notes</label>
+            <input
+              type="text"
+              name="adminNotes"
+              value={vendorDraft.adminNotes || ""}
+              onChange={handleChange}
+              readOnly={!isEditOpen}
+              className={`form-input ${!isEditOpen ? "input-readonly" : ""}`}
+            />
           </div>
         </form>
       </div>

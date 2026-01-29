@@ -27,7 +27,7 @@ const VendorDetailPage = () => {
 
       return result;
     },
-    [updateVendor]
+    [updateVendor],
   );
 
   const currentVendor = useMemo(() => {
@@ -36,16 +36,16 @@ const VendorDetailPage = () => {
 
   const overviewCtx = useMemo(
     () => ({
-      vendor: currentVendor
+      vendor: currentVendor,
     }),
-    [currentVendor]
+    [currentVendor],
   );
 
   const inventoryCtx = useMemo(
     () => ({
       vendorId: vendorId,
     }),
-    [vendorId]
+    [vendorId],
   );
 
   const settingsCtx = useMemo(
@@ -53,7 +53,7 @@ const VendorDetailPage = () => {
       vendor: currentVendor,
       onEdit: handleVendorUpdate,
     }),
-    [currentVendor, handleVendorUpdate]
+    [currentVendor, handleVendorUpdate],
   );
 
   if (!currentVendor) return null;
@@ -64,9 +64,16 @@ const VendorDetailPage = () => {
       <header className="vendor-details-header">
         <div className="view-title-group">
           <h2 className="page-title">{currentVendor.name}</h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginTop: "4px",
+            }}
+          >
             <span className="page-description">Vendor ID: {vendorId}</span>
-            <span className={`status-badge ${currentVendor.status === 'active' ? 'status-active' : 'status-inactive'}`}>
+            <span className={`status-badge status-${currentVendor.status}`}>
               {currentVendor.status}
             </span>
           </div>
@@ -75,13 +82,29 @@ const VendorDetailPage = () => {
 
       {/* 2. Navigation Tab Bar */}
       <nav className="tab-navigation">
-        <NavLink end to="" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+        <NavLink
+          end
+          to=""
+          className={({ isActive }) =>
+            isActive ? "tab-link active" : "tab-link"
+          }
+        >
           Overview
         </NavLink>
-        <NavLink to="inventory" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+        <NavLink
+          to="inventory"
+          className={({ isActive }) =>
+            isActive ? "tab-link active" : "tab-link"
+          }
+        >
           Inventory
         </NavLink>
-        <NavLink to="settings" className={({ isActive }) => isActive ? "tab-link active" : "tab-link"}>
+        <NavLink
+          to="settings"
+          className={({ isActive }) =>
+            isActive ? "tab-link active" : "tab-link"
+          }
+        >
           Settings
         </NavLink>
       </nav>

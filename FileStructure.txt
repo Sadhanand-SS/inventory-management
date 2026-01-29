@@ -28,6 +28,7 @@ inventory-management/
 │   │   │   ├── VendorItem.jsx
 │   │   │   ├── VendorList.jsx
 │   │   │   ├── VendorSummary.jsx
+│   │   │   ├── VendorSettings.jsx        ← ✅ ADDED
 │   │   │   └── modals/
 │   │   │       ├── VendorForm.jsx
 │   │   │       └── VendorModal.jsx
@@ -49,11 +50,15 @@ inventory-management/
 │   │   └── MainLayout.jsx
 │   │
 │   ├── pages/
-│   │   ├── InventoryPage.jsx
+│   │   ├── InventoryPage.jsx      (No Longer used in this project cause its spilted in to 2 Pages for Admin and Vendor)
 │   │   ├── LoginPage.jsx
 │   │   ├── UnauthorizedPage.jsx
+│   │   ├── VendorsPage.jsx
 │   │   ├── VendorDetailPage.jsx
-│   │   └── VendorsPage.jsx
+│   │   │
+│   │   └── inventory/
+│   │       ├── VendorInventoryPage.jsx
+│   │       └── AdminVendorInventoryPage.jsx
 │   │
 │   ├── utils/
 │   │   ├── formatters.js

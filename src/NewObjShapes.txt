@@ -1,0 +1,36 @@
+Product {
+  productId: string,
+  vendorId: string,
+
+  name: string,
+  description: string,
+  category: string,
+  subCategory?: string,
+  brand?: string,
+
+  pricing: {
+    mrp: number,
+    sellingPrice: number,
+    taxIncluded: boolean
+  },
+
+  stock: {
+    quantity: number,
+    lowStockThreshold: number
+  },
+
+  identifiers: {
+    sku: string
+  },
+
+  status: {
+    isActive: boolean
+  },
+
+  createdAt: number,
+  updatedAt: number
+}
+
+
+------------------------------
+

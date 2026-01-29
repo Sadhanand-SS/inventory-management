@@ -112,7 +112,6 @@ const VendorsPage = () => {
         {isAddOpen && (
           <div className="modal-layer">
             <VendorModal
-              vendor={{}}
               onClose={closeModal}
               onSubmit={handleSubmitVendor}
             />

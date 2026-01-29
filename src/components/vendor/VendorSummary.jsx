@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import VendorModal from "./modals/VendorModal";
 
 const VendorSummary = () => {
   const { overview } = useOutletContext();
@@ -10,7 +8,19 @@ const VendorSummary = () => {
     return <p>Loading vendor details...</p>;
   }
 
-  const { vendorId: id, name, email, status } = vendor;
+  const formatDate = (timestamp) => {
+    return new Date(timestamp).toLocaleString("en-IN");
+  };
+  const {
+    vendorId: id,
+    name,
+    email,
+    status,
+    isActive,
+    adminNotes,
+    createdAt,
+    updatedAt,
+  } = vendor;
 
   return (
     <div className="vendor-summary-card">
@@ -40,7 +50,30 @@ const VendorSummary = () => {
             {status}
           </span>
         </div>
+
+        <div className="info-item">
+          <span className="info-label">Active:</span>
+          <span className="info-value">{isActive ? "Yes" : "No"}</span>
+        </div>
+
+        <div className="info-item">
+          <span className="info-label">Created At:</span>
+          <span className="info-value">{formatDate(createdAt)}</span>
+        </div>
+
+        <div className="info-item">
+          <span className="info-label">Last Updated:</span>
+          <span className="info-value">{formatDate(updatedAt)}</span>
+        </div>
       </div>
+
+      {typeof adminNotes === "string" &&
+        adminNotes.trim() !== "" && (
+          <div className="info-item">
+            <span className="info-label">Notes:</span>
+            <span className="info-value">{adminNotes}</span>
+          </div>
+        )}
     </div>
   );
 };

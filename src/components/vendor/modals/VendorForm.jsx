@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
-const VendorForm = ({ vendor, onSubmit }) => {
+const VendorForm = ({ onSubmit }) => {
   const isSubmittingRef = useRef(false);
   const nameInputRef = useRef(null);
 
-  const safeVendor = vendor || {};
-
-  const [name, setName] = useState(safeVendor.name || "");
-  const [email, setEmail] = useState(safeVendor.email || "");
-  const [status, setStatus] = useState(
-    safeVendor.vendorId ? safeVendor.status : "active",
-  );
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     if (nameInputRef.current) {
@@ -22,14 +18,13 @@ const VendorForm = ({ vendor, onSubmit }) => {
     e.preventDefault();
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
-    const updatedVendor = {
-      ...vendor, // preserves id during EDIT
+    const newVendor = {
       name: name.trim(),
       email: email.trim(),
-      status: status.trim(),
+      adminNotes : notes.trim()
     };
 
-    onSubmit(updatedVendor);
+    onSubmit(newVendor);
   };
 
   return (
@@ -67,34 +62,18 @@ const VendorForm = ({ vendor, onSubmit }) => {
           />
         </div>
 
-        {/* Radio Group Section */}
-        <div className="form-group status-selection">
-          <span className="form-label">Vendor Status</span>
-          <div className="radio-group">
-            <label className="radio-label">
-              <input
-                className="radio-input"
-                type="radio"
-                name="status"
-                value="active"
-                checked={status === "active"}
-                onChange={(e) => setStatus(e.target.value)}
-              />
-              <span className="radio-text">Active</span>
-            </label>
-
-            <label className="radio-label">
-              <input
-                className="radio-input"
-                type="radio"
-                name="status"
-                value="inactive"
-                checked={status === "inactive"}
-                onChange={(e) => setStatus(e.target.value)}
-              />
-              <span className="radio-text">Inactive</span>
-            </label>
-          </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="vendor-notes">
+            Notes
+          </label>
+          <input
+            id="vendor-notes"
+            className="form-input"
+            type="text"
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
         </div>
       </div>
 
