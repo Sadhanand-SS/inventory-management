@@ -10,7 +10,7 @@ import ProductItem from "./ProductItem";
  * - Render list
  * - Forward edit intent upward
  */
-const ProductList = React.memo(({ products, onEdit, onDelete }) => {
+const ProductList = React.memo(({ products, onEdit, onDelete, onSelectProduct }) => {
   if (products.length === 0) {
     return <p>No products available.</p>;
   }
@@ -25,6 +25,7 @@ const ProductList = React.memo(({ products, onEdit, onDelete }) => {
                 product={product}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                onSelect = {onSelectProduct}
               />
             </div>
           </li>

@@ -1,13 +1,20 @@
 import React from "react";
 
 import { formatPrice, formatQuantity } from "../../utils/formatters";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
+const ProductItem = React.memo(({ product, onEdit, onDelete, onSelect }) => {
   return (
     <div className="product-item">
       <div className="product-info-group">
         <div className="product-main-details">
-          <span className="product-name">{product.name}</span>
+          <span
+            className="product-name"
+            onClick={() => onSelect(product.productId)}
+            style={{ cursor: "pointer" }}
+          >
+            {product.name}
+          </span>
           <span className="product-category-badge">{product.category}</span>
         </div>
 

@@ -6,11 +6,13 @@ import RequireAuth from "./components/auth/RequireAuth";
 import VendorsPage from "./pages/VendorsPage";
 import VendorDetailPage from "./pages/VendorDetailPage";
 import RequireAdmin from "./components/auth/RequireAdmin";
+import RequireVendor from "./components/auth/RequireVendor";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import VendorInventoryPage from "./pages/inventory/VendorInventoryPage";
 import VendorSummary from "./components/vendor/VendorSummary";
 import AdminVendorInventoryPage from "./pages/inventory/AdminVendorInventoryPage";
 import VendorSettings from "./components/vendor/VendorSettings";
+import ProductPage from "./pages/ProductPage";
 
 /**
  * App.jsx
@@ -43,6 +45,16 @@ const App = () => {
               </RequireAuth>
             }
           />
+          <Route
+            path="/inventory/:vendorId/:productId"
+            element={
+              <RequireAuth>
+                <RequireVendor>
+                  <ProductPage />
+                </RequireVendor>
+              </RequireAuth>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
           {/* Default / fallback route */}
           <Route path="/" element={<Navigate to="/login" />} />
@@ -72,9 +84,17 @@ const App = () => {
             <Route path="inventory" element={<AdminVendorInventoryPage />} />
             <Route path="settings" element={<VendorSettings />} />
           </Route>
+          <Route
+            path="/vendors/:vendorId/inventory/:productId"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <ProductPage />
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
-          {/* <Route path="*" element={<Navigate to="Hello" />} /> */}
         </Routes>
       </MainLayout>
     </BrowserRouter>

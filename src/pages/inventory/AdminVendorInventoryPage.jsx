@@ -21,7 +21,6 @@ const AdminVendorInventoryPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { vendors } = useContext(VendorContext);
   const { products, addProduct, updateProduct, deleteProduct } =
     useContext(InventoryContext);
 
@@ -113,6 +112,13 @@ const AdminVendorInventoryPage = () => {
     [editorState.initialProduct, addProduct, updateProduct, closeModal],
   );
 
+  const handleSelectProduct = useCallback(
+    (productId) => {
+      navigate(`/vendors/${activeVendorId}/inventory/${productId}`);
+    },
+    [navigate, activeVendorId],
+  );
+
   return (
     <div className="admin-inventory-page">
       <div className="admin-container">
@@ -151,6 +157,7 @@ const AdminVendorInventoryPage = () => {
               products={vendorProducts}
               onEdit={handleEditClick}
               onDelete={handleDeleteProduct}
+              onSelectProduct={handleSelectProduct}
             />
           </div>
         </main>

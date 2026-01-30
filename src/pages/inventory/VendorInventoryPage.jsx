@@ -120,6 +120,13 @@ const VendorInventoryPage = () => {
     [editorState.initialProduct, addProduct, updateProduct, closeModal],
   );
 
+  const handleSelectProduct = useCallback(
+    (productId) => {
+      navigate(`/inventory/${activeVendorId}/${productId}`);
+    },
+    [navigate, activeVendorId],
+  );
+
   if (vendorsLoaded && !isAllowed) {
     return null;
   }
@@ -162,6 +169,7 @@ const VendorInventoryPage = () => {
               products={vendorProducts}
               onEdit={handleEditClick}
               onDelete={handleDeleteProduct}
+              onSelectProduct={handleSelectProduct}
             />
           </div>
         </main>
