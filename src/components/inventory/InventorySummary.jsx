@@ -13,14 +13,15 @@ const InventorySummary = ({ products }) => {
   const totalProducts = products.length;
 
   const totalQuantity = products.reduce(
-    (sum, product) => sum + product.quantity,
+    (sum, product) => sum + Number(product.stock?.quantity || 0),
     0,
   );
 
-  const totalValue = products.reduce(
-    (sum, product) => sum + product.price * product.quantity,
-    0,
-  );
+  const totalInventoryValue = products.reduce((sum, product) => {
+    const mrp = Number(product.pricing?.mrp || 0);
+    const qty = Number(product.stock?.quantity || 0);
+    return sum + mrp * qty;
+  }, 0);
 
   return (
     <div className="inventory-summary">
@@ -42,7 +43,9 @@ const InventorySummary = ({ products }) => {
             <div className="summary-card total-value">
               <span className="summary-label">Total Inventory Value</span>
               <p className="summary-value highlight">
-                {formatPrice(totalValue)}
+                {Number.isNaN(totalInventoryValue)
+                  ? "—"
+                  : formatPrice(totalInventoryValue)}
               </p>
             </div>
           </div>

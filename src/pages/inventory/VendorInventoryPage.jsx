@@ -35,7 +35,7 @@ const VendorInventoryPage = () => {
     return vendors.find((vendor) => vendor.vendorId === activeVendorId);
   }, [vendors, activeVendorId]);
 
-  const isVendorActive = activeVendor?.status === "active";
+  const isVendorActive = activeVendor?.status === "approved" && activeVendor?.isActive === true;
 
   const vendorsLoaded = vendors.length > 0;
   const isAllowed = vendorsLoaded && !!activeVendor && isVendorActive;
@@ -99,7 +99,7 @@ const VendorInventoryPage = () => {
 
   const handleSubmitProduct = useCallback(
     async (productDraft) => {
-      const result = editorState.initialProduct?.id
+      const result = editorState.initialProduct?.productId
         ? await updateProduct(productDraft)
         : await addProduct({ ...productDraft, vendorId: activeVendorId });
 

@@ -1,17 +1,20 @@
 export const REQUIRED_FIELDS_ADD = [
   "vendorId",
   "name",
-  "price",
-  "quantity",
+  "description",
   "category",
+  "pricing",
+  "stock",
 ];
+
 export const REQUIRED_FIELDS_UPDATE = [
-  "id",
-  "vendorId",
+  "productId",
   "name",
-  "price",
-  "quantity",
+  "description",
   "category",
+  "pricing",
+  "stock",
+  "isActive",
 ];
 
 export function isValidObject(obj, requiredFields = REQUIRED_FIELDS_ADD) {

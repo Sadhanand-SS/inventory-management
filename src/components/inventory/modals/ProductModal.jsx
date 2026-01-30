@@ -16,7 +16,7 @@ const ProductModal = ({ product, onClose, onSubmit }) => {
       <div className="modal-container">
         <div className="modal-header">
           <h2 className="modal-title">
-            {product.id ? "Edit Product" : "Add Product"}
+            {product.productId ? "Edit Product" : "Add Product"}
           </h2>
         </div>
 

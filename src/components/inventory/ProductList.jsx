@@ -19,7 +19,7 @@ const ProductList = React.memo(({ products, onEdit, onDelete }) => {
     <div className="product-list-container">
       <ul className="product-list">
         {products.map((product) => (
-          <li key={product.id} className="product-list-item">
+          <li key={product.productId} className="product-list-item">
             <div className="product-item-wrapper">
               <ProductItem
                 product={product}

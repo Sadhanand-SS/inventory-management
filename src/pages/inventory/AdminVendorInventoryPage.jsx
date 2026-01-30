@@ -92,7 +92,7 @@ const AdminVendorInventoryPage = () => {
 
   const handleSubmitProduct = useCallback(
     async (productDraft) => {
-      const result = editorState.initialProduct?.id
+      const result = editorState.initialProduct?.productId
         ? await updateProduct(productDraft)
         : await addProduct({ ...productDraft, vendorId: activeVendorId });
 

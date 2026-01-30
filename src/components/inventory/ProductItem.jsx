@@ -12,9 +12,15 @@ const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
         </div>
 
         <div className="product-stats">
-          <span className="product-price">{formatPrice(product.price)}</span>
+          <span className="product-price">
+            {Number.isNaN(product.pricing.sellingPrice)
+              ? "--"
+              : formatPrice(product.pricing.sellingPrice)}
+          </span>
           <span className="product-quantity">
-            {formatQuantity(product.quantity)}
+            {Number.isNaN(product.stock.quantity)
+              ? "--"
+              : formatQuantity(product.stock.quantity)}
           </span>
         </div>
       </div>
@@ -23,7 +29,10 @@ const ProductItem = React.memo(({ product, onEdit, onDelete }) => {
         <button className="btn-edit" onClick={() => onEdit(product)}>
           Edit
         </button>
-        <button className="btn-delete" onClick={() => onDelete(product.id)}>
+        <button
+          className="btn-delete"
+          onClick={() => onDelete(product.productId)}
+        >
           Delete
         </button>
       </div>

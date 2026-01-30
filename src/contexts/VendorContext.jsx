@@ -136,29 +136,31 @@ const VendorProvider = ({ children }) => {
     return { success: true };
   };
 
-  const updateVendor = (vendor) => {
-    if (!isValidObject(vendor, REQUIRED_FIELDS_UPDATE))
+  const updateVendor = (updatedVendor) => {
+    if (!isValidObject(updatedVendor, REQUIRED_FIELDS_UPDATE))
       return {
         success: false,
         error: "INVALID_VENDOR_DETAILS",
       };
+
     const timestamp = Date.now();
 
     setVendors((prevVendors) =>
       prevVendors.map((p) =>
-        p.vendorId === vendor.vendorId
+        p.vendorId === updatedVendor.vendorId
           ? {
               ...p,
-              name: vendor.name,
-              email: vendor.email,
-              status: vendor.status,
-              isActive: vendor.isActive,
-              adminNotes : vendor.adminNotes ?? "",
+              name: updatedVendor.name,
+              email: updatedVendor.email,
+              status: updatedVendor.status,
+              isActive: updatedVendor.isActive,
+              adminNotes: updatedVendor.adminNotes ?? "",
               updatedAt: timestamp,
             }
           : p,
       ),
     );
+
     return { success: true };
   };
 
