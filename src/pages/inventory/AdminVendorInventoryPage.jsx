@@ -1,4 +1,11 @@
-import { useContext, useState, useEffect, useMemo, useCallback } from "react";
+import {
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  use,
+} from "react";
 import {
   useLocation,
   useNavigate,
@@ -29,6 +36,7 @@ const AdminVendorInventoryPage = () => {
     initialProduct: null,
   });
 
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
@@ -44,24 +52,11 @@ const AdminVendorInventoryPage = () => {
   }, [products, activeVendorId]);
 
   const handleAddClick = () => {
-    setEditorState({
-      open: true,
-      initialProduct: {},
-    });
+    setIsAddOpen(true);
   };
 
-  const handleEditClick = useCallback((product) => {
-    setEditorState({
-      open: true,
-      initialProduct: product,
-    });
-  }, []);
-
   const closeModal = useCallback(() => {
-    setEditorState({
-      open: false,
-      initialProduct: null,
-    });
+    setIsAddOpen(false);
   }, []);
 
   const handleDeleteProduct = useCallback(
@@ -91,9 +86,10 @@ const AdminVendorInventoryPage = () => {
 
   const handleSubmitProduct = useCallback(
     async (productDraft) => {
-      const result = editorState.initialProduct?.productId
-        ? await updateProduct(productDraft)
-        : await addProduct({ ...productDraft, vendorId: activeVendorId });
+      const result = await addProduct({
+        ...productDraft,
+        vendorId: activeVendorId,
+      });
 
       if (result.success) {
         setNotification({
@@ -109,12 +105,16 @@ const AdminVendorInventoryPage = () => {
         });
       }
     },
-    [editorState.initialProduct, addProduct, updateProduct, closeModal],
+    [addProduct, closeModal],
   );
 
   const handleSelectProduct = useCallback(
     (productId) => {
-      navigate(`/vendors/${activeVendorId}/inventory/${productId}`);
+      navigate(`/vendors/${activeVendorId}/inventory/${productId}`, {
+        state: {
+          from: `/vendors/${activeVendorId}/inventory`,
+        },
+      });
     },
     [navigate, activeVendorId],
   );
@@ -155,20 +155,15 @@ const AdminVendorInventoryPage = () => {
           <div className="table-wrapper">
             <ProductList
               products={vendorProducts}
-              onEdit={handleEditClick}
               onDelete={handleDeleteProduct}
               onSelectProduct={handleSelectProduct}
             />
           </div>
         </main>
 
-        {editorState.open && (
+        {isAddOpen && (
           <div className="admin-modal-root">
-            <ProductModal
-              product={editorState.initialProduct}
-              onClose={closeModal}
-              onSubmit={handleSubmitProduct}
-            />
+            <ProductModal onClose={closeModal} onSubmit={handleSubmitProduct} />
           </div>
         )}
       </div>

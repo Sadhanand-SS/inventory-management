@@ -10,19 +10,17 @@ import ProductForm from "./ProductForm";
  * - Host ProductForm
  * - Forward submit/close events
  */
-const ProductModal = ({ product, onClose, onSubmit }) => {
+const ProductModal = ({ onClose, onSubmit }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2 className="modal-title">
-            {product.productId ? "Edit Product" : "Add Product"}
-          </h2>
+          <h2 className="modal-title">Add Product</h2>
         </div>
 
         <div className="modal-body">
           {/* ProductForm receives product for prefill */}
-          <ProductForm product={product} onSubmit={onSubmit} />
+          <ProductForm onSubmit={onSubmit} />
         </div>
 
         <div className="modal-footer">

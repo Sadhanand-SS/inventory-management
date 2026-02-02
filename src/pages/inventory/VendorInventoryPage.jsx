@@ -16,10 +16,7 @@ const VendorInventoryPage = () => {
   const { products, addProduct, updateProduct, deleteProduct } =
     useContext(InventoryContext);
 
-  const [editorState, setEditorState] = useState({
-    open: false,
-    initialProduct: null,
-  });
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const [notification, setNotification] = useState(null);
 
@@ -35,7 +32,8 @@ const VendorInventoryPage = () => {
     return vendors.find((vendor) => vendor.vendorId === activeVendorId);
   }, [vendors, activeVendorId]);
 
-  const isVendorActive = activeVendor?.status === "approved" && activeVendor?.isActive === true;
+  const isVendorActive =
+    activeVendor?.status === "approved" && activeVendor?.isActive === true;
 
   const vendorsLoaded = vendors.length > 0;
   const isAllowed = vendorsLoaded && !!activeVendor && isVendorActive;
@@ -52,24 +50,11 @@ const VendorInventoryPage = () => {
   }, [isAllowed, vendorsLoaded, navigate]);
 
   const handleAddClick = () => {
-    setEditorState({
-      open: true,
-      initialProduct: {},
-    });
+    setIsAddOpen(true);
   };
 
-  const handleEditClick = useCallback((product) => {
-    setEditorState({
-      open: true,
-      initialProduct: product,
-    });
-  }, []);
-
   const closeModal = useCallback(() => {
-    setEditorState({
-      open: false,
-      initialProduct: null,
-    });
+    setIsAddOpen(false);
   }, []);
 
   const handleDeleteProduct = useCallback(
@@ -99,9 +84,10 @@ const VendorInventoryPage = () => {
 
   const handleSubmitProduct = useCallback(
     async (productDraft) => {
-      const result = editorState.initialProduct?.productId
-        ? await updateProduct(productDraft)
-        : await addProduct({ ...productDraft, vendorId: activeVendorId });
+      const result = await addProduct({
+        ...productDraft,
+        vendorId: activeVendorId,
+      });
 
       if (result.success) {
         setNotification({
@@ -117,12 +103,16 @@ const VendorInventoryPage = () => {
         });
       }
     },
-    [editorState.initialProduct, addProduct, updateProduct, closeModal],
+    [addProduct, closeModal],
   );
 
   const handleSelectProduct = useCallback(
     (productId) => {
-      navigate(`/inventory/${activeVendorId}/${productId}`);
+      navigate(`/inventory/${activeVendorId}/${productId}`, {
+        state: {
+          from: `/inventory/${activeVendorId}`,
+        },
+      });
     },
     [navigate, activeVendorId],
   );
@@ -167,20 +157,15 @@ const VendorInventoryPage = () => {
           <div className="list-card">
             <ProductList
               products={vendorProducts}
-              onEdit={handleEditClick}
               onDelete={handleDeleteProduct}
               onSelectProduct={handleSelectProduct}
             />
           </div>
         </main>
 
-        {editorState.open && (
+        {isAddOpen && (
           <div className="inventory-modal-overlay">
-            <ProductModal
-              product={editorState.initialProduct}
-              onClose={closeModal}
-              onSubmit={handleSubmitProduct}
-            />
+            <ProductModal onClose={closeModal} onSubmit={handleSubmitProduct} />
           </div>
         )}
       </div>

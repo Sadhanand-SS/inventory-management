@@ -13,6 +13,8 @@ import VendorSummary from "./components/vendor/VendorSummary";
 import AdminVendorInventoryPage from "./pages/inventory/AdminVendorInventoryPage";
 import VendorSettings from "./components/vendor/VendorSettings";
 import ProductPage from "./pages/ProductPage";
+import ProductOverview from "./components/inventory/ProductOverview";
+import ProductSettings from "./components/inventory/ProductSettings";
 
 /**
  * App.jsx
@@ -54,7 +56,12 @@ const App = () => {
                 </RequireVendor>
               </RequireAuth>
             }
-          />
+          >
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<ProductOverview />} />
+            <Route path="settings" element={<ProductSettings />} />
+          </Route>
+
           <Route path="/login" element={<LoginPage />} />
           {/* Default / fallback route */}
           <Route path="/" element={<Navigate to="/login" />} />
@@ -93,7 +100,11 @@ const App = () => {
                 </RequireAdmin>
               </RequireAuth>
             }
-          />
+          >
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<ProductOverview />} />
+            <Route path="settings" element={<ProductSettings />} />
+          </Route>
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
         </Routes>
       </MainLayout>

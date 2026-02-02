@@ -1,42 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 
-const ProductForm = ({ product, onSubmit }) => {
+const ProductForm = ({ onSubmit }) => {
   const nameInputRef = useRef(null);
   const isSubmittingRef = useRef(false);
 
-  // ---------- SAFE NORMALIZATION (THIS FIXES THE CRASH) ----------
-  const safeProduct = product ?? {};
-
-  const pricing = safeProduct.pricing ?? {};
-  const stock = safeProduct.stock ?? {};
-  const identifiers = safeProduct.identifiers ?? {};
-
   // ---------- STATE ----------
-  const [name, setName] = useState(safeProduct.name || "");
-  const [description, setDescription] = useState(
-    safeProduct.description || ""
-  );
-  const [category, setCategory] = useState(safeProduct.category || "");
-  const [subCategory, setSubCategory] = useState(
-    safeProduct.subCategory || ""
-  );
-  const [brand, setBrand] = useState(safeProduct.brand || "");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [brand, setBrand] = useState("");
 
-  const [mrp, setMrp] = useState(pricing.mrp || "");
-  const [sellingPrice, setSellingPrice] = useState(
-    pricing.sellingPrice || ""
-  );
-  const [taxIncluded, setTaxIncluded] = useState(
-    pricing.taxIncluded || false
-  );
+  const [mrp, setMrp] = useState("");
+  const [sellingPrice, setSellingPrice] = useState("");
+  const [taxIncluded, setTaxIncluded] = useState(false);
 
-  const [quantity, setQuantity] = useState(stock.quantity || "");
-  const [lowStockThreshold, setLowStockThreshold] = useState(
-    stock.lowStockThreshold || 10
-  );
+  const [quantity, setQuantity] = useState("");
 
-  const [sku, setSku] = useState(identifiers.sku || "");
-  const [active, setActive] = useState(safeProduct.isActive || false);
+  const [sku, setSku] = useState("");
 
   // ---------- EFFECT ----------
   useEffect(() => {
@@ -51,24 +32,22 @@ const ProductForm = ({ product, onSubmit }) => {
     const formProduct = {
       ...product,
       name: name.trim(),
-      description : description.trim(),
-      category : category.trim(),
-      subCategory :subCategory.trim(),
-      pricing : {
-        mrp:mrp,
-        sellingPrice:sellingPrice,
-        taxIncluded : taxIncluded
+      description: description.trim(),
+      category: category.trim(),
+      subCategory: subCategory.trim(),
+      pricing: {
+        mrp: mrp,
+        sellingPrice: sellingPrice,
+        taxIncluded: taxIncluded,
       },
-      stock :{
-        quantity : quantity,
-        lowStockThreshold :lowStockThreshold,
+      stock: {
+        quantity: quantity,
       },
-      identifiers : {
-        sku :sku
+      identifiers: {
+        sku: sku,
       },
-      isActive : active
-    }
-    
+    };
+
     onSubmit(formProduct);
   };
 
@@ -76,7 +55,6 @@ const ProductForm = ({ product, onSubmit }) => {
   return (
     <form className="product-form" onSubmit={handleSubmit}>
       <div className="form-fields-container">
-
         <div className="form-group">
           <label className="form-label">Product Name</label>
           <input
@@ -184,16 +162,6 @@ const ProductForm = ({ product, onSubmit }) => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Low Stock Threshold</label>
-          <input
-            type="number"
-            className="form-input"
-            value={lowStockThreshold}
-            onChange={(e) => setLowStockThreshold(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
           <label className="form-label">SKU</label>
           <input
             className="form-input"
@@ -201,29 +169,6 @@ const ProductForm = ({ product, onSubmit }) => {
             onChange={(e) => setSku(e.target.value)}
           />
         </div>
-
-        <div className="form-group">
-          <label className="form-label">Status</label>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                checked={active === true}
-                onChange={() => setActive(true)}
-              />
-              Active
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={active === false}
-                onChange={() => setActive(false)}
-              />
-              Inactive
-            </label>
-          </div>
-        </div>
-
       </div>
 
       <div className="form-actions">
