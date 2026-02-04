@@ -1,49 +1,56 @@
 import React from "react";
 
 import { formatPrice, formatQuantity } from "../../utils/formatters";
-import { useNavigate, useParams } from "react-router-dom";
+import { Stack, Button, Typography, Paper } from "@mui/material";
 
-const ProductItem = React.memo(({ product, onEdit, onDelete, onSelect }) => {
+const ProductItem = React.memo(({ product, onDelete, onSelect }) => {
   return (
-    <div className="product-item">
-      <div className="product-info-group">
-        <div className="product-main-details">
-          <span
-            className="product-name"
-            onClick={() => onSelect(product.productId)}
-            style={{ cursor: "pointer" }}
-          >
-            {product.name}
-          </span>
-          <span className="product-category-badge">{product.category}</span>
-        </div>
-
-        <div className="product-stats">
-          <span className="product-price">
-            {Number.isNaN(product.pricing.sellingPrice)
-              ? "--"
-              : formatPrice(product.pricing.sellingPrice)}
-          </span>
-          <span className="product-quantity">
-            {Number.isNaN(product.stock.quantity)
-              ? "--"
-              : formatQuantity(product.stock.quantity)}
-          </span>
-        </div>
-      </div>
-
-      <div className="product-actions">
-        <button className="btn-edit" onClick={() => onEdit(product)}>
-          Edit
-        </button>
-        <button
-          className="btn-delete"
-          onClick={() => onDelete(product.productId)}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
+    <Paper
+      elevation={2}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        p: 3,
+        width: "100%",
+        borderRadius: 2,
+        cursor: "pointer",
+        transition: "background-color 0.2s ease",
+        "&:hover": {
+          backgroundColor: "action.hover",
+        },
+      }}
+      onClick={() => onSelect(product.productId)}
+    >
+      <Stack>
+        <Typography variant="subtitle1" sx={{ cursor: "pointer" }}>
+          {product.name}
+        </Typography>
+        <Typography variant="subtitle2">{product.category}</Typography>
+        <Typography variant="subtitle2">
+          Qty:{" "}
+          {Number.isNaN(product.stock.quantity)
+            ? "--"
+            : formatQuantity(product.stock.quantity)}
+        </Typography>
+        <Typography variant="subtitle2">
+          {Number.isNaN(product.pricing.sellingPrice)
+            ? "--"
+            : formatPrice(product.pricing.sellingPrice)}
+        </Typography>
+      </Stack>
+      <Button
+        variant="outlined"
+        size="small"
+        color="error"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(product.productId);
+        }}
+      >
+        Delete
+      </Button>
+    </Paper>
   );
 });
 

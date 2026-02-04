@@ -1,9 +1,19 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useParams, useLocation } from "react-router-dom";
 import { VendorContext } from "../contexts/VendorContext";
 import Notification from "../components/ui/Notification";
+import { Box, Container, Stack, Typography, Tabs, Tab } from "@mui/material";
 
 const VendorDetailPage = () => {
+  const location = useLocation();
+
+  const tabValue = useMemo(() => {
+    if (location.pathname.endsWith("/overview")) return 0;
+    if (location.pathname.endsWith("/inventory")) return 1;
+    if (location.pathname.endsWith("/settings")) return 2;
+    return 0;
+  }, [location.pathname]);
+
   const { vendorId } = useParams();
   const { vendors, updateVendor } = useContext(VendorContext);
 
@@ -59,55 +69,25 @@ const VendorDetailPage = () => {
   if (!currentVendor) return null;
 
   return (
-    <div className="detail-page-container">
-      {/* 1. Header Section */}
-      <header className="vendor-details-header">
-        <div className="view-title-group">
-          <h2 className="page-title">{currentVendor.name}</h2>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              marginTop: "4px",
-            }}
-          >
-            <span className="page-description">Vendor ID: {vendorId}</span>
-            <span className={`status-badge status-${currentVendor.status}`}>
-              {currentVendor.status}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      {/* 2. Navigation Tab Bar */}
-      <nav className="tab-navigation">
-        <NavLink
-          end
-          to=""
-          className={({ isActive }) =>
-            isActive ? "tab-link active" : "tab-link"
-          }
-        >
-          Overview
-        </NavLink>
-        <NavLink
-          to="inventory"
-          className={({ isActive }) =>
-            isActive ? "tab-link active" : "tab-link"
-          }
-        >
-          Inventory
-        </NavLink>
-        <NavLink
-          to="settings"
-          className={({ isActive }) =>
-            isActive ? "tab-link active" : "tab-link"
-          }
-        >
-          Settings
-        </NavLink>
-      </nav>
+    <Container maxWidth="lg">
+      <Box sx={{ pt: 4, pb: 4 }}>
+        <Stack gap={2}>
+          <Typography variant="h5">{currentVendor.name}</Typography>
+          <Stack direction="row" gap={2}>
+            <Typography variant="subtitle2">
+              Vendor ID : {currentVendor.vendorId}
+            </Typography>
+            <Typography variant="subtitle2">{currentVendor.status}</Typography>
+          </Stack>
+        </Stack>
+      </Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs value={tabValue} aria-label="Vendor detail tabs">
+          <Tab label="Overview" component={NavLink} to="overview" />
+          <Tab label="Inventory" component={NavLink} to="inventory" />
+          <Tab label="Settings" component={NavLink} to="settings" />
+        </Tabs>
+      </Box>
 
       {/* 3. Notification Handling */}
       {notification && (
@@ -117,18 +97,14 @@ const VendorDetailPage = () => {
           onClose={() => setNotification(null)}
         />
       )}
-
-      {/* 4. Sub-route Content */}
-      <div className="tab-content-wrapper">
-        <Outlet
-          context={{
-            overview: overviewCtx,
-            inventory: inventoryCtx,
-            settings: settingsCtx,
-          }}
-        />
-      </div>
-    </div>
+      <Outlet
+        context={{
+          overview: overviewCtx,
+          inventory: inventoryCtx,
+          settings: settingsCtx,
+        }}
+      />
+    </Container>
   );
 };
 

@@ -4,10 +4,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Notification from "../components/ui/Notification";
 import VendorList from "../components/vendor/VendorList";
 import VendorModal from "../components/vendor/modals/VendorModal";
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  Button,
+  Paper,
+} from "@mui/material";
 
 const VendorsPage = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
-
   const [notification, setNotification] = useState(null);
 
   const { vendors, addVendor, deleteVendor } = useContext(VendorContext);
@@ -76,49 +83,45 @@ const VendorsPage = () => {
   );
 
   return (
-    <div className="vendors-page">
-      <div className="page-container">
+    <Container maxWidth="lg" disableGutters>
+      <Box sx={{ px: 3, py: 4 }}>
         {notification && (
-          <div className="notification-container">
-            <Notification
-              type={notification.type}
-              message={notification.message}
-              onClose={() => setNotification(null)}
-            />
-          </div>
+          <Notification
+            type={notification.type}
+            message={notification.message}
+            onClose={() => setNotification(null)}
+          />
         )}
 
-        <div className="page-header">
-          <div className="header-text">
-            <h1 className="page-title">Vendor Directory</h1>
-            <p className="page-description">
-              Manage and monitor all registered product vendors.
-            </p>
-          </div>
+        <Paper elevation={1} sx={{ px: 3, py: 2, mb: 3 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            gap={2}
+          >
+            <Stack spacing={0.5}>
+              <Typography variant="h5">Vendor Directory</Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                Manage and monitor all registered product vendors.
+              </Typography>
+            </Stack>
 
-          <div className="header-actions">
-            <button className="btn-add-primary" onClick={handleAddClick}>
-              <span className="icon">+</span> Add New Vendor
-            </button>
-          </div>
-        </div>
+            <Button variant="contained" onClick={handleAddClick}>
+              Add New Vendor
+            </Button>
+          </Stack>
+        </Paper>
 
-        <main className="page-content">
-          <div className="list-card-view">
-            <VendorList vendors={vendors} onDelete={handleDeleteVendor} />
-          </div>
-        </main>
+        <VendorList vendors={vendors} onDelete={handleDeleteVendor} />
 
-        {isAddOpen && (
-          <div className="modal-layer">
-            <VendorModal
-              onClose={closeModal}
-              onSubmit={handleSubmitVendor}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+        <VendorModal
+          open={isAddOpen}
+          onClose={closeModal}
+          onSubmit={handleSubmitVendor}
+        />
+      </Box>
+    </Container>
   );
 };
 

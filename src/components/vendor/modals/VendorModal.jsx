@@ -1,27 +1,19 @@
+import { Modal, Box, Stack } from "@mui/material";
 import VendorForm from "./VendorForm";
 
-const VendorModal = ({ onClose, onSubmit }) => {
+const VendorModal = ({ open, onClose, onSubmit }) => {
   return (
-    <div className="modal-overlay">
-      <div className="modal-container vendor-modal">
-        <div className="modal-header">
-          <h2 className="modal-title">
-            Add Vendor
-          </h2>
-        </div>
-
-        <div className="modal-body">
-          {/* VendorForm receives vendor for prefill */}
-          <VendorForm onSubmit={onSubmit} />
-        </div>
-
-        <div className="modal-footer">
-          <button className="btn-modal-cancel" onClick={onClose}>
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
+      <Box sx={{ my: 4, maxHeight: "90vh", overflowY: "auto" }}>
+        <Stack>
+          <VendorForm onSubmit={onSubmit} onClose={onClose} />
+        </Stack>
+      </Box>
+    </Modal>
   );
 };
 export default VendorModal;

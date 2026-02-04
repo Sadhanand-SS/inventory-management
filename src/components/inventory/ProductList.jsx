@@ -1,38 +1,38 @@
 import React from "react";
 import ProductItem from "./ProductItem";
+import { List, ListItem, Paper, Stack, Box, Typography } from "@mui/material";
 
-/**
- * ProductList
- * -----------
- * Presentation + delegation unit.
- *
- * Responsibilities:
- * - Render list
- * - Forward edit intent upward
- */
-const ProductList = React.memo(({ products, onEdit, onDelete, onSelectProduct }) => {
-  if (products.length === 0) {
-    return <p>No products available.</p>;
-  }
+const ProductList = React.memo(
+  ({ products, onEdit, onDelete, onSelectProduct }) => {
+    if (products.length === 0) {
+      return (
+        <Box sx={{p:2}}>
+          <Paper elevation={1} sx={{ p: 4 }}>
+          No Products Available.
+        </Paper>
+        </Box>
+        
+      );
+    }
 
-  return (
-    <div className="product-list-container">
-      <ul className="product-list">
+    return (
+      <Box>
+        <Typography variant="h5" sx={{p:2}}>Products</Typography>
+        <List>
         {products.map((product) => (
-          <li key={product.productId} className="product-list-item">
-            <div className="product-item-wrapper">
-              <ProductItem
-                product={product}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onSelect = {onSelectProduct}
-              />
-            </div>
-          </li>
+          <ListItem sx={{ p: 2 }} key={product.productId}>
+            <ProductItem
+              product={product}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onSelect={onSelectProduct}
+            />
+          </ListItem>
         ))}
-      </ul>
-    </div>
-  );
-});
+      </List>
+      </Box>
+    );
+  },
+);
 
 export default ProductList;

@@ -6,6 +6,14 @@ import InventorySummary from "../../components/inventory/InventorySummary";
 import ProductList from "../../components/inventory/ProductList";
 import ProductModal from "../../components/inventory/modals/ProductModal";
 import Notification from "../../components/ui/Notification";
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  Paper,
+  Container,
+} from "@mui/material";
 
 const VendorInventoryPage = () => {
   const { vendorId: activeVendorId } = useParams();
@@ -17,13 +25,11 @@ const VendorInventoryPage = () => {
     useContext(InventoryContext);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
-
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     if (location.state?.notification) {
       setNotification(location.state.notification);
-
       navigate(location.pathname, { replace: true, state: null });
     }
   }, [location.pathname, navigate]);
@@ -94,7 +100,6 @@ const VendorInventoryPage = () => {
           type: "success",
           message: "Product saved Successfully",
         });
-
         closeModal();
       } else {
         setNotification({
@@ -122,10 +127,10 @@ const VendorInventoryPage = () => {
   }
 
   return (
-    <div className="inventory-page">
-      <div className="inventory-container">
+    <Container maxWidth="lg">
+      <Box sx={{ py: 4 }}>
         {notification && (
-          <div className="notification-toast-wrapper">
+          <div className="admin-notification-layer">
             <Notification
               type={notification.type}
               message={notification.message}
@@ -134,42 +139,48 @@ const VendorInventoryPage = () => {
           </div>
         )}
 
-        <header className="inventory-header">
-          <div className="header-branding">
-            <h1 className="inventory-title">Inventory Management</h1>
-            <p className="inventory-subtitle">
-              Monitor and update your product stock levels.
-            </p>
-          </div>
+        <Stack spacing={3}>
+          {/* Header */}
+          <Paper elevation={1} sx={{ p: 2 }}>
+            <Stack spacing={1.5}>
+              <Typography variant="h5">Inventory Management</Typography>
 
-          <div className="header-controls">
-            <button className="btn-add-product" onClick={handleAddClick}>
-              <span className="btn-icon">+</span> Add New Product
-            </button>
-          </div>
-        </header>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                gap={2}
+              >
+                <Typography variant="subtitle2" color="text.secondary">
+                  Monitor and update your product stock levels.
+                </Typography>
 
-        <section className="inventory-stats-section">
+                <Button variant="contained" onClick={handleAddClick}>
+                  Add Product
+                </Button>
+              </Stack>
+            </Stack>
+          </Paper>
+
+          {/* Summary */}
           <InventorySummary products={vendorProducts} />
-        </section>
 
-        <main className="inventory-list-section">
-          <div className="list-card">
-            <ProductList
-              products={vendorProducts}
-              onDelete={handleDeleteProduct}
-              onSelectProduct={handleSelectProduct}
-            />
-          </div>
-        </main>
+          {/* Product List */}
+          <ProductList
+            products={vendorProducts}
+            onDelete={handleDeleteProduct}
+            onSelectProduct={handleSelectProduct}
+          />
+        </Stack>
 
-        {isAddOpen && (
-          <div className="inventory-modal-overlay">
-            <ProductModal onClose={closeModal} onSubmit={handleSubmitProduct} />
-          </div>
-        )}
-      </div>
-    </div>
+        {/* Modal */}
+        <ProductModal
+          open={isAddOpen}
+          onClose={closeModal}
+          onSubmit={handleSubmitProduct}
+        />
+      </Box>
+    </Container>
   );
 };
 

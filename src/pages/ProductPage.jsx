@@ -5,9 +5,18 @@ import {
   Outlet,
   useNavigate,
   useLocation,
-} from "react-router-dom"; // Added NavLink and Outlet
+} from "react-router-dom";
 import { InventoryContext } from "../contexts/InventoryContext";
-import Notification from "../components/ui/Notification"; // Assuming you have this
+import Notification from "../components/ui/Notification";
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  Tabs,
+  Tab,
+  Button,
+} from "@mui/material";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -16,6 +25,11 @@ const ProductPage = () => {
   const { products, updateProduct } = useContext(InventoryContext);
 
   const [notification, setNotification] = useState(null);
+
+  const tabValue = useMemo(() => {
+    if (location.pathname.endsWith("/settings")) return 1;
+    return 0; // overview (default /product/:id)
+  }, [location.pathname]);
 
   const currentProduct = useMemo(() => {
     return products.find(
@@ -51,11 +65,12 @@ const ProductPage = () => {
       navigate(-1);
     }
   };
-  // Memoize contexts for the Outlet
+
   const overviewCtx = useMemo(
     () => ({ product: currentProduct }),
     [currentProduct],
   );
+
   const settingsCtx = useMemo(
     () => ({
       product: currentProduct,
@@ -66,53 +81,43 @@ const ProductPage = () => {
 
   if (!currentProduct) {
     return (
-      <div className="product-not-found">
-        <h2>Product not found</h2>
-
-        <button type="button" onClick={handleBack} className="link-button">
-          Inventory
-        </button>
-      </div>
+      <Container maxWidth="lg">
+        <Box sx={{ py: 4 }}>
+          <Typography variant="h6">Product not found</Typography>
+          <Button onClick={handleBack} sx={{ mt: 2 }}>
+            Back to Inventory
+          </Button>
+        </Box>
+      </Container>
     );
   }
 
   return (
-    <div className="detail-page-container">
-      <div className="product-page-header">
-        <button type="button" onClick={handleBack} className="link-button">
-          ←
-        </button>
-      </div>
-      {/* 1. Header */}
-      <header className="vendor-details-header">
-        <h2 className="page-title">{currentProduct.name}</h2>
-        <span className="page-description">
-          SKU: {currentProduct.identifiers?.sku || productId}
-        </span>
-      </header>
+    <Container maxWidth="lg">
+      {/* Back Button */}
+      <Box sx={{ pt: 2 }}>
+        <Button onClick={handleBack}>← Back</Button>
+      </Box>
 
-      {/* 2. Pill Navigation */}
-      <nav className="tab-navigation">
-        <NavLink
-          end
-          to=""
-          className={({ isActive }) =>
-            isActive ? "tab-link active" : "tab-link"
-          }
-        >
-          Overview
-        </NavLink>
-        <NavLink
-          to="settings"
-          className={({ isActive }) =>
-            isActive ? "tab-link active" : "tab-link"
-          }
-        >
-          Settings
-        </NavLink>
-      </nav>
+      {/* Header */}
+      <Box sx={{ pt: 2, pb: 4 }}>
+        <Stack gap={2}>
+          <Typography variant="h5">{currentProduct.name}</Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            SKU: {currentProduct.identifiers?.sku || productId}
+          </Typography>
+        </Stack>
+      </Box>
 
-      {/* 3. Notifications */}
+      {/* Tabs */}
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs value={tabValue} aria-label="Product detail tabs">
+          <Tab label="Overview" component={NavLink} to="" end />
+          <Tab label="Settings" component={NavLink} to="settings" />
+        </Tabs>
+      </Box>
+
+      {/* Notifications */}
       {notification && (
         <Notification
           type={notification.type}
@@ -121,11 +126,9 @@ const ProductPage = () => {
         />
       )}
 
-      {/* 4. Nested Content */}
-      <div className="tab-content-wrapper">
-        <Outlet context={{ overview: overviewCtx, settings: settingsCtx }} />
-      </div>
-    </div>
+      {/* Nested Routes */}
+      <Outlet context={{ overview: overviewCtx, settings: settingsCtx }} />
+    </Container>
   );
 };
 

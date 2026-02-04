@@ -2,44 +2,24 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Notification from "../components/ui/Notification";
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+} from "@mui/material";
 
-/**
- * LoginPage
- * ---------
- * Entry point for authentication.
- *
- * Responsibilities:
- * - Collect user credentials
- * - Trigger login action
- * - Decide post-login navigation based on role
- * - Display one-time notifications via route state
- *
- * This page is allowed to:
- * - Read auth results
- * - Control navigation flow after login
- *
- * This page does NOT:
- * - Own authentication state
- * - Contain business logic
- */
 const LoginPage = () => {
-  /**
-   * Consume only the login action from AuthContext.
-   * Auth state itself is NOT read here to avoid timing issues.
-   */
   const { login } = useAuth();
 
-  /**
-   * Local state for controlled form inputs.
-   */
   const [userCredentials, setUserCredentials] = useState({
     username: "",
     password: "",
   });
 
-  /**
-   * Local UI state for notifications.
-   */
   const [notification, setNotification] = useState(null);
 
   const location = useLocation();
@@ -47,10 +27,6 @@ const LoginPage = () => {
 
   const usernameRef = useRef(null);
 
-  /**
-   * Consume route-scoped notification (flash message).
-   * Clears route state after displaying once.
-   */
   useEffect(() => {
     if (usernameRef.current) {
       usernameRef.current.focus();
@@ -60,15 +36,10 @@ const LoginPage = () => {
   useEffect(() => {
     if (location.state?.notification) {
       setNotification(location.state.notification);
-
-      // Clear route state after consumption
       navigate(location.pathname, { replace: true, state: null });
     }
   }, [location.state, navigate]);
 
-  /**
-   * Handles controlled input updates.
-   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserCredentials((prev) => ({
@@ -77,17 +48,6 @@ const LoginPage = () => {
     }));
   };
 
-  /**
-   * Handles login form submission.
-   *
-   * Flow:
-   * - Trigger login
-   * - On success:
-   *     - Admin  → /vendors
-   *     - Vendor → /inventory/:vendorId
-   * - On failure:
-   *     - Show error notification
-   */
   const onLogin = async (e) => {
     e.preventDefault();
 
@@ -120,59 +80,62 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page-container">
-      {notification && (
-        <div className="notification-wrapper">
-          <Notification
-            type={notification.type}
-            message={notification.message}
-            onClose={() => setNotification(null)}
-          />
-        </div>
-      )}
-
-      <div className="login-card">
-        <div className="login-header">
-          <h1 className="login-title">Login Page</h1>
-          <p className="login-subtitle">
-            Please enter your credentials to continue
-          </p>
-        </div>
-
-        <form className="login-form" onSubmit={onLogin}>
-          <div className="form-group">
-            <label className="form-label">Username</label>
-            <input
-              className="form-input"
-              type="text"
-              name="username"
-              value={userCredentials.username}
-              ref={usernameRef}
-              onChange={handleChange}
-              placeholder="Enter your username"
+    <Container maxWidth="sm">
+      <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+        <Stack spacing={3} width="100%">
+          {notification && (
+            <Notification
+              type={notification.type}
+              message={notification.message}
+              onClose={() => setNotification(null)}
             />
-          </div>
+          )}
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              className="form-input"
-              type="password"
-              name="password"
-              value={userCredentials.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-            />
-          </div>
+          <Paper elevation={2} sx={{ p: 4 }}>
+            <Stack spacing={2}>
+              <Stack spacing={0.5}>
+                <Typography variant="h5">Login</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Please enter your credentials to continue
+                </Typography>
+              </Stack>
 
-          <div className="form-actions">
-            <button className="btn-login-submit" type="submit">
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+              <Box component="form" onSubmit={onLogin}>
+                <Stack spacing={2}>
+                  <TextField
+                    label="Username"
+                    name="username"
+                    value={userCredentials.username}
+                    onChange={handleChange}
+                    inputRef={usernameRef}
+                    placeholder="Enter your username"
+                    fullWidth
+                  />
+
+                  <TextField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    value={userCredentials.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    fullWidth
+                  />
+
+                  <Box
+                    sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}
+                  >
+                    <Button variant="contained" type="submit">
+                      Login
+                    </Button>
+                  </Box>
+                </Stack>
+              </Box>
+            </Stack>
+          </Paper>
+        </Stack>
+      </Box>
+    </Container>
   );
 };
 

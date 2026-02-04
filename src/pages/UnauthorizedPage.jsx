@@ -1,30 +1,47 @@
 import { Link } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  Button,
+  Paper,
+} from "@mui/material";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 const UnauthorizedPage = () => {
   return (
-    <div className="unauthorized-page-wrapper">
-      <div className="unauthorized-card">
-        <div className="unauthorized-icon-container">
-          {/* You can add an SVG or Icon here via CSS */}
-          <div className="warning-icon" aria-hidden="true">
-            !
-          </div>
-        </div>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Paper elevation={2} sx={{ p: 4, width: "100%", textAlign: "center" }}>
+          <Stack spacing={2} alignItems="center">
+            <WarningAmberIcon color="warning" sx={{ fontSize: 48 }} />
 
-        <div className="unauthorized-content">
-          <h1 className="unauthorized-title">Unauthorized</h1>
-          <p className="unauthorized-message">
-            You do not have permission to access this page.
-          </p>
-        </div>
+            <Typography variant="h5">Unauthorized</Typography>
 
-        <div className="unauthorized-actions">
-          <Link to="/login" className="btn-return-login">
-            Go to Login
-          </Link>
-        </div>
-      </div>
-    </div>
+            <Typography variant="body2" color="text.secondary">
+              You do not have permission to access this page.
+            </Typography>
+
+            <Button
+              component={Link}
+              to="/login"
+              variant="contained"
+              sx={{ mt: 1 }}
+            >
+              Go to Login
+            </Button>
+          </Stack>
+        </Paper>
+      </Box>
+    </Container>
   );
 };
 

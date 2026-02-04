@@ -1,26 +1,51 @@
 import React from "react";
 import VendorItem from "./VendorItem";
+import { Box, Stack, Typography } from "@mui/material";
 
 const VendorList = React.memo(({ vendors, onDelete }) => {
-  if (vendors.length === 0) return <p>No Vendors available.</p>;
+  if (vendors.length === 0) {
+    return <Typography>No Vendors available.</Typography>;
+  }
 
   return (
-    <div className="vendor-list-container">
-      <div className="vendor-list-header">
-        <h2 className="list-title">Registered Vendors</h2>
-        <span className="list-count">Total: {vendors.length}</span>
-      </div>
+    <Box>
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6">Registered Vendors</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Total: {vendors.length}
+        </Typography>
+      </Box>
 
-      <ul className="vendor-list">
+      {/* Flex Grid */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          alignItems: "stretch",
+        }}
+      >
         {vendors.map((vendor) => (
-          <li key={vendor.vendorId} className="vendor-list-item">
-            <div className="vendor-item-card-wrapper">
-              <VendorItem vendor={vendor} onDelete={onDelete} />
-            </div>
-          </li>
+          <Box
+            key={vendor.vendorId}
+            sx={{
+              flex: "1 1 280px", // fixed-width feel, responsive wrap
+              maxWidth: "320px", // prevents cards from stretching too wide
+            }}
+          >
+            <VendorItem vendor={vendor} onDelete={onDelete} />
+          </Box>
         ))}
-      </ul>
-    </div>
+      </Box>
+    </Box>
   );
 });
 

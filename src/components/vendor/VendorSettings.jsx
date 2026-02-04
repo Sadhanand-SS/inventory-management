@@ -1,5 +1,18 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import {
+  Box,
+  Button,
+  TextField,
+  Stack,
+  Typography,
+  Paper,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Switch,
+  FormLabel,
+} from "@mui/material";
 
 const VendorSettings = () => {
   const { settings } = useOutletContext();
@@ -23,12 +36,16 @@ const VendorSettings = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value, type, checked } = e.target;
 
     setVendorDraft((prev) => ({
       ...prev,
       [name]:
-        type === "radio" && name === "isActive" ? value === "true" : value,
+        type === "radio" && name === "isActive"
+          ? value === "true"
+          : type === "checkbox"
+            ? checked
+            : value,
     }));
   };
 
@@ -41,169 +58,133 @@ const VendorSettings = () => {
   };
 
   return (
-    <div className="detail-page-container">
-      <header className="page-header">
-        <div className="header-text">
-          <h2 className="page-title">Vendor Settings</h2>
-          <p className="page-description">
+    <Paper elevation={2} sx={{ p: 3, mt: 4 }}>
+      {/* Header */}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Box>
+          <Typography variant="h5">Vendor Settings</Typography>
+          <Typography variant="body2" color="text.secondary">
             Manage your profile and account status
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="header-actions">
-          {!isEditOpen ? (
-            <button
-              type="button"
-              className="btn-edit"
-              onClick={handleEditClick}
+        {!isEditOpen ? (
+          <Button variant="contained" onClick={handleEditClick}>
+            Edit Settings
+          </Button>
+        ) : (
+          <Stack direction="row" spacing={2}>
+            <Button onClick={closeModal} color="inherit">
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              form="vendor-settings-form"
             >
-              Edit Settings
-            </button>
-          ) : (
-            <div style={{ display: "flex", gap: "12px" }}>
-              <button type="button" className="btn-cancel" onClick={closeModal}>
-                Cancel
-              </button>
-              <button
-                type="submit"
-                form="vendor-settings-form"
-                className="btn-save-vendor"
-              >
-                Save Changes
-              </button>
-            </div>
-          )}
-        </div>
-      </header>
+              Save Changes
+            </Button>
+          </Stack>
+        )}
+      </Stack>
 
-      <div className="summary-card">
-        <form
-          id="vendor-settings-form"
-          onSubmit={handleSubmitVendor}
-          className="vendor-form"
-        >
-          {/* Name Field */}
-          <div className="form-group">
-            <label className="form-label">Vendor Name</label>
-            <input
-              type="text"
-              name="name"
-              value={vendorDraft.name || ""}
+      <form id="vendor-settings-form" onSubmit={handleSubmitVendor}>
+        <Stack spacing={3}>
+          {/* BASIC INFO */}
+          <Typography variant="subtitle2" color="text.secondary">
+            BASIC INFO
+          </Typography>
+
+          <TextField
+            label="Vendor Name"
+            name="name"
+            value={vendorDraft.name || ""}
+            onChange={handleChange}
+            fullWidth
+            InputProps={{ readOnly: !isEditOpen }}
+          />
+
+          <TextField
+            label="Email Address"
+            type="email"
+            name="email"
+            value={vendorDraft.email || ""}
+            onChange={handleChange}
+            fullWidth
+            InputProps={{ readOnly: !isEditOpen }}
+          />
+
+          {/* STATUS */}
+          <Typography variant="subtitle2" color="text.secondary">
+            STATUS
+          </Typography>
+
+          <Box>
+            <FormLabel>Account Status</FormLabel>
+            <RadioGroup
+              row
+              name="status"
+              value={vendorDraft.status || ""}
               onChange={handleChange}
-              readOnly={!isEditOpen}
-              className={`form-input ${!isEditOpen ? "input-readonly" : ""}`}
-            />
-          </div>
+            >
+              <FormControlLabel
+                value="approved"
+                control={<Radio disabled={!isEditOpen} />}
+                label="Approved"
+              />
+              <FormControlLabel
+                value="pending"
+                control={<Radio disabled={!isEditOpen} />}
+                label="Pending"
+              />
+              <FormControlLabel
+                value="rejected"
+                control={<Radio disabled={!isEditOpen} />}
+                label="Rejected"
+              />
+            </RadioGroup>
+          </Box>
 
-          {/* Email Field */}
-          <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={vendorDraft.email || ""}
-              onChange={handleChange}
-              readOnly={!isEditOpen}
-              className={`form-input ${!isEditOpen ? "input-readonly" : ""}`}
-            />
-          </div>
+          {/* VISIBILITY */}
+          <Typography variant="subtitle2" color="text.secondary">
+            VISIBILITY
+          </Typography>
 
-          {/* Status Radio Group */}
-          <div className="form-group">
-            <label className="form-label">Account Status</label>
-            <div className="radio-group">
-              <label
-                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="status"
-                  value="approved"
-                  checked={vendorDraft.status === "approved"}
-                  onChange={handleChange}
-                  disabled={!isEditOpen}
-                />
-                Approved
-              </label>
-              <label
-                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="status"
-                  value="pending"
-                  checked={vendorDraft.status === "pending"}
-                  onChange={handleChange}
-                  disabled={!isEditOpen}
-                />
-                Pending
-              </label>
-              <label
-                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="status"
-                  value="rejected"
-                  checked={vendorDraft.status === "rejected"}
-                  onChange={handleChange}
-                  disabled={!isEditOpen}
-                />
-                Rejected
-              </label>
-            </div>
-          </div>
+          <FormControlLabel
+            control={
+              <Switch
+                name="isActive"
+                checked={!!vendorDraft.isActive}
+                onChange={handleChange}
+                disabled={!isEditOpen}
+              />
+            }
+            label={vendorDraft.isActive ? "Active" : "Inactive"}
+          />
 
-          {/* isActive Radio Group */}
-          <div className="form-group">
-            <label className="form-label">Active</label>
+          {/* NOTES */}
+          <Typography variant="subtitle2" color="text.secondary">
+            NOTES
+          </Typography>
 
-            <div className="radio-group">
-              <label
-                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="isActive"
-                  value="true"
-                  checked={vendorDraft.isActive === true}
-                  onChange={handleChange}
-                  disabled={!isEditOpen}
-                />
-                Yes
-              </label>
-
-              <label
-                className={`radio-label ${!isEditOpen ? "radio-disabled" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="isActive"
-                  value="false"
-                  checked={vendorDraft.isActive === false}
-                  onChange={handleChange}
-                  disabled={!isEditOpen}
-                />
-                No
-              </label>
-            </div>
-          </div>
-
-          {/* Notes Field */}
-          <div className="form-group">
-            <label className="form-label">Notes</label>
-            <input
-              type="text"
-              name="adminNotes"
-              value={vendorDraft.adminNotes || ""}
-              onChange={handleChange}
-              readOnly={!isEditOpen}
-              className={`form-input ${!isEditOpen ? "input-readonly" : ""}`}
-            />
-          </div>
-        </form>
-      </div>
-    </div>
+          <TextField
+            label="Admin Notes"
+            name="adminNotes"
+            value={vendorDraft.adminNotes || ""}
+            onChange={handleChange}
+            fullWidth
+            multiline
+            rows={2}
+            InputProps={{ readOnly: !isEditOpen }}
+          />
+        </Stack>
+      </form>
+    </Paper>
   );
 };
 

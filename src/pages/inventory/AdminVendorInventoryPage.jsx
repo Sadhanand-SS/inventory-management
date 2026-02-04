@@ -18,6 +18,7 @@ import InventorySummary from "../../components/inventory/InventorySummary";
 import ProductList from "../../components/inventory/ProductList";
 import ProductModal from "../../components/inventory/modals/ProductModal";
 import Notification from "../../components/ui/Notification";
+import { Box, Button, Stack, Typography, Paper } from "@mui/material";
 
 const AdminVendorInventoryPage = () => {
   const { inventory } = useOutletContext();
@@ -120,54 +121,53 @@ const AdminVendorInventoryPage = () => {
   );
 
   return (
-    <div className="admin-inventory-page">
-      <div className="admin-container">
-        {notification && (
-          <div className="admin-notification-layer">
-            <Notification
-              type={notification.type}
-              message={notification.message}
-              onClose={() => setNotification(null)}
-            />
-          </div>
-        )}
-
-        <div className="admin-view-header">
-          <div className="view-title-group">
-            <h2 className="admin-title">Vendor Inventory Management</h2>
-            <p className="admin-subtitle">
-              Reviewing stock and pricing for this specific vendor.
-            </p>
-          </div>
-
-          <div className="admin-actions">
-            <button className="btn-add-item-admin" onClick={handleAddClick}>
-              <span className="btn-plus-icon">+</span> Add Product
-            </button>
-          </div>
+    <Box sx={{ py: 4 }}>
+      {notification && (
+        <div className="admin-notification-layer">
+          <Notification
+            type={notification.type}
+            message={notification.message}
+            onClose={() => setNotification(null)}
+          />
         </div>
+      )}
+      <Stack spacing={3}>
+        <Paper elevation={1} sx={{ p: 2 }}>
+          <Stack spacing={1.5}>
+            <Typography variant="h5">Vendor Inventory Management</Typography>
 
-        <section className="admin-summary-wrapper">
-          <InventorySummary products={vendorProducts} />
-        </section>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              gap={2}
+            >
+              <Typography variant="subtitle2" color="text.secondary">
+                Reviewing stock and pricing for this specific vendor.
+              </Typography>
 
-        <main className="admin-list-content">
-          <div className="table-wrapper">
-            <ProductList
-              products={vendorProducts}
-              onDelete={handleDeleteProduct}
-              onSelectProduct={handleSelectProduct}
-            />
-          </div>
-        </main>
+              <Button variant="contained" onClick={handleAddClick}>
+                Add Product
+              </Button>
+            </Stack>
+          </Stack>
+        </Paper>
 
-        {isAddOpen && (
-          <div className="admin-modal-root">
-            <ProductModal onClose={closeModal} onSubmit={handleSubmitProduct} />
-          </div>
-        )}
-      </div>
-    </div>
+        <InventorySummary products={vendorProducts} />
+
+        <ProductList
+          products={vendorProducts}
+          onDelete={handleDeleteProduct}
+          onSelectProduct={handleSelectProduct}
+        />
+      </Stack>
+
+      <ProductModal
+        open={isAddOpen}
+        onClose={closeModal}
+        onSubmit={handleSubmitProduct}
+      />
+    </Box>
   );
 };
 

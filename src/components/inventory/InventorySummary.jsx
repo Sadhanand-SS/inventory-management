@@ -1,4 +1,6 @@
-import { formatPrice } from "../../utils/formatters";
+import { Typography, Box, Paper, Stack} from "@mui/material";
+import {styled} from '@mui/material/styles'
+import { formatPrice, formatQuantity } from "../../utils/formatters";
 /**
  * InventorySummary
  * ----------------
@@ -23,39 +25,44 @@ const InventorySummary = ({ products }) => {
     return sum + mrp * qty;
   }, 0);
 
+  const PaddedStack = styled(Stack)(({ theme }) => ({
+    gap: theme.spacing(2),
+    padding: theme.spacing(4),
+  }));
+
   return (
-    <div className="inventory-summary">
-      <div className="summary-container">
-        <h2 className="summary-title">Inventory Overview</h2>
-
-        {totalProducts !== 0 ? (
-          <div className="summary-grid">
-            <div className="summary-card total-products">
-              <span className="summary-label">Total Products</span>
-              <p className="summary-value">{totalProducts}</p>
-            </div>
-
-            <div className="summary-card total-quantity">
-              <span className="summary-label">Total Quantity</span>
-              <p className="summary-value">{totalQuantity}</p>
-            </div>
-
-            <div className="summary-card total-value">
-              <span className="summary-label">Total Inventory Value</span>
-              <p className="summary-value highlight">
-                {Number.isNaN(totalInventoryValue)
-                  ? "—"
-                  : formatPrice(totalInventoryValue)}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="summary-empty-state">
-            <p className="empty-message">No inventory available</p>
-          </div>
-        )}
-      </div>
-    </div>
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h5" sx={{ pb: 3, pt: 3 }}>
+        Inventory Overview
+      </Typography>
+      {totalProducts !== 0 ? (
+        <Paper>
+          <PaddedStack>
+            <Typography variant="subtitle1">
+              Total Products : {totalProducts}
+            </Typography>
+            <Typography variant="subtitle1">
+              Total Quantity :{" "}
+              {Number.isNaN(totalQuantity)
+                ? "_"
+                : formatQuantity(totalQuantity)}
+            </Typography>
+            <Typography variant="subtitle1">
+              Total Valuse :{" "}
+              {Number.isNaN(totalInventoryValue)
+                ? "—"
+                : formatPrice(totalInventoryValue)}
+            </Typography>
+          </PaddedStack>
+        </Paper>
+      ) : (
+        <Paper>
+          <PaddedStack>
+            <Typography variant="subtitle1">No inventory available</Typography>
+          </PaddedStack>
+        </Paper>
+      )}
+    </Box>
   );
 };
 

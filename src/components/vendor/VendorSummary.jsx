@@ -1,16 +1,18 @@
 import { useOutletContext } from "react-router-dom";
+import { Box, Typography, Paper, Stack, Chip, Divider } from "@mui/material";
 
 const VendorSummary = () => {
   const { overview } = useOutletContext();
 
   const { vendor } = overview;
   if (!vendor) {
-    return <p>Loading vendor details...</p>;
+    return <Typography>Loading vendor details...</Typography>;
   }
 
   const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleString("en-IN");
   };
+
   const {
     vendorId: id,
     name,
@@ -22,59 +24,74 @@ const VendorSummary = () => {
     updatedAt,
   } = vendor;
 
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case "approved":
+        return "success";
+      case "pending":
+        return "warning";
+      case "rejected":
+        return "error";
+      default:
+        return "default";
+    }
+  };
+
   return (
-    <div className="vendor-summary-card">
-      <div className="vendor-details-header">
-        <h3 className="vendor-title">Vendor Information</h3>
-      </div>
+    <Paper elevation={2} sx={{ p: 3, mt: 4 }}>
+      {/* Header */}
+      <Box mb={2}>
+        <Typography variant="h6">Vendor Information</Typography>
+      </Box>
 
-      <div className="vendor-info-grid">
-        <div className="info-item">
-          <span className="info-label">Vendor ID:</span>
-          <span className="info-value">{id}</span>
-        </div>
+      {/* Info Grid */}
+      <Stack spacing={1.5}>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Vendor ID:</Typography>
+          <Typography>{id}</Typography>
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Name:</span>
-          <span className="info-value">{name}</span>
-        </div>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Name:</Typography>
+          <Typography>{name}</Typography>
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Email:</span>
-          <span className="info-value">{email}</span>
-        </div>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Email:</Typography>
+          <Typography>{email}</Typography>
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Status:</span>
-          <span className={`status-badge status-${status.toLowerCase()}`}>
-            {status}
-          </span>
-        </div>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Typography fontWeight={600}>Status:</Typography>
+          <Chip label={status} color={getStatusColor(status)} size="small" />
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Active:</span>
-          <span className="info-value">{isActive ? "Yes" : "No"}</span>
-        </div>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Active:</Typography>
+          <Typography>{isActive ? "Yes" : "No"}</Typography>
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Created At:</span>
-          <span className="info-value">{formatDate(createdAt)}</span>
-        </div>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Created At:</Typography>
+          <Typography>{formatDate(createdAt)}</Typography>
+        </Stack>
 
-        <div className="info-item">
-          <span className="info-label">Last Updated:</span>
-          <span className="info-value">{formatDate(updatedAt)}</span>
-        </div>
-      </div>
+        <Stack direction="row" spacing={1}>
+          <Typography fontWeight={600}>Last Updated:</Typography>
+          <Typography>{formatDate(updatedAt)}</Typography>
+        </Stack>
+      </Stack>
 
-      {typeof adminNotes === "string" &&
-        adminNotes.trim() !== "" && (
-          <div className="info-item">
-            <span className="info-label">Notes:</span>
-            <span className="info-value">{adminNotes}</span>
-          </div>
-        )}
-    </div>
+      {typeof adminNotes === "string" && adminNotes.trim() !== "" && (
+        <>
+          <Divider sx={{ my: 2 }} />
+          <Stack direction="row" spacing={1}>
+            <Typography fontWeight={600}>Notes:</Typography>
+            <Typography>{adminNotes}</Typography>
+          </Stack>
+        </>
+      )}
+    </Paper>
   );
 };
 
